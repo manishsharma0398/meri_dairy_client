@@ -1,0 +1,21 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 30px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 20px;
+
+  .logo-container {
+    .logo {
+    }
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+
+    &-item {
+      padding: 0 5px;
+    }
+  }
+}
