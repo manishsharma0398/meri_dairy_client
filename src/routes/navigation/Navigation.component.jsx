@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./navigation.styles.scss";
 
 const Navigation = () => {
+  const { currentUser } = useSelector((state) => state.user);
+  console.log(currentUser);
   return (
     <nav className="navigation">
       <div className="logo-container">
@@ -12,12 +15,21 @@ const Navigation = () => {
         </Link>
       </div>
       <ul className="nav-links">
-        <li className="nav-links-item">
-          <Link to="/login">Login</Link>
-        </li>
-        <li className="nav-links-item">
-          <Link to="/register">Register</Link>
-        </li>
+        {!currentUser && (
+          <li className="nav-links-item">
+            <Link to="/login">Login</Link>
+          </li>
+        )}
+        {!currentUser && (
+          <li className="nav-links-item">
+            <Link to="/register">Register</Link>
+          </li>
+        )}
+        {currentUser && (
+          <li className="nav-links-item">
+            <Link to="#">Log out</Link>
+          </li>
+        )}
       </ul>
     </nav>
   );
