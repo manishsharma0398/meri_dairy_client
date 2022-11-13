@@ -1,0 +1,1 @@
+export const SET_ANIMAL_DETAILS = "SET_ANIMAL_DETAILS";

@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React, { Fragment } from "react";
+import { Routes, Route } from "react-router-dom";
 
 import Navigation from "./routes/navigation/Navigation.component";
 import Login from "./routes/login/Login.component";
@@ -9,12 +9,12 @@ import Dashboard from "./routes/dashboard/Dashboard.component";
 import "./index.css";
 
 const App = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    navigate("/dashboard");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   navigate("/dashboard");
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <Fragment>
