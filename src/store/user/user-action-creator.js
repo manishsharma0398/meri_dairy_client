@@ -53,6 +53,7 @@ export const registerUser = async (registrationData) => {
 export const logOutUser = async () => {
   try {
     await axios.post("/auth/logout");
+    localStorage.removeItem(process.env.REACT_APP_CIPHER_LOCALSTORAGE_KEY);
   } catch (err) {
     console.log(err);
     // return { error: true, data: err.response.data.message };
