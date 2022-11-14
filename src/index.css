@@ -37,3 +37,8 @@ a {
 .err-msg {
   color: red;
 }
+
+.home-btns {
+  display: flex;
+  gap: 20px;
+}

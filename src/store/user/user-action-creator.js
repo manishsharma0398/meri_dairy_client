@@ -1,4 +1,5 @@
 import axios from "axios";
+import cryptoJs from "crypto-js";
 
 import { SET_CURRENT_USER, SET_CURRENT_USER_ERROR } from "./user-action-types";
 
@@ -23,6 +24,17 @@ export const loginUser = async (loginData) => {
       password,
       email: emailOrPhone,
     });
+
+    const stringifyUserData = JSON.stringify(userData.data.data);
+    const cipherText = cryptoJs.AES.encrypt(
+      stringifyUserData,
+      process.env.REACT_APP_CIPHER_SECRET_TOKEN
+    );
+    localStorage.setItem(
+      process.env.REACT_APP_CIPHER_LOCALSTORAGE_KEY,
+      cipherText
+    );
+
     return { ...userData.data, error: false };
   } catch (err) {
     return { error: true, data: err.response.data.message };
@@ -45,4 +57,20 @@ export const logOutUser = async () => {
     console.log(err);
     // return { error: true, data: err.response.data.message };
   }
+};
+
+export const getUserDataOnRefresh = async () => {
+  if (localStorage.getItem(process.env.REACT_APP_CIPHER_LOCALSTORAGE_KEY)) {
+    const encryptedText = localStorage.getItem(
+      process.env.REACT_APP_CIPHER_LOCALSTORAGE_KEY
+    );
+    const bytes = cryptoJs.AES.decrypt(
+      encryptedText,
+      process.env.REACT_APP_CIPHER_SECRET_TOKEN
+    );
+    const decryptedData = JSON.parse(bytes.toString(cryptoJs.enc.Utf8));
+    return decryptedData;
+  }
+
+  return null;
 };
