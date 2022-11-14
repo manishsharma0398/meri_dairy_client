@@ -10,7 +10,7 @@ const DashboardItem = ({ animal }) => {
       <img src={photo_url} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-body-title">
-          <Link to={`/animals/:${tag_no}`}>{tag_no}</Link>
+          <Link to={`/animals/${tag_no}`}>{tag_no}</Link>
         </h5>
         <p className="card-body-text">{remarks}</p>
       </div>

@@ -16,10 +16,14 @@ const Navigation = () => {
   const navigate = useNavigate();
 
   const logOutHandler = async () => {
-    logOutUser();
-    dispatch(setCurrentUser(null));
-    dispatch(setCurrentUserError({ error: false, errorMsg: "" }));
-    navigate("/login");
+    try {
+      await logOutUser();
+      dispatch(setCurrentUser(null));
+      dispatch(setCurrentUserError({ error: false, errorMsg: "" }));
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
