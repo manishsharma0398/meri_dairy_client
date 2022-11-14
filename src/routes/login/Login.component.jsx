@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
-import { setCurrentUser } from "../../store/user/user-action-creator";
+import {
+  setCurrentUser,
+  loginUser,
+  setCurrentUserError,
+} from "../../store/user/user-action-creator";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
@@ -15,7 +18,8 @@ const Login = () => {
     emailOrPhone: "",
     password: "",
   });
-  const [error, setError] = useState(null);
+
+  const { error, errorMsg } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,26 +33,23 @@ const Login = () => {
   const loginFormHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      setError(null);
-      const res = await axios.post("/auth/login", {
-        password,
-        email: emailOrPhone,
-      });
-      console.table(res.data);
-      dispatch(setCurrentUser(res.data));
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.response.data.message);
+    dispatch(setCurrentUserError({ error: false, errorMsg: "" }));
 
-      console.log(err.response);
-    }
+    const userData = await loginUser(loginFormFields);
+    const { data, error } = userData;
+
+    if (error) return dispatch(setCurrentUserError({ error, errorMsg: data }));
+
+    dispatch(setCurrentUser(data));
+    return navigate("/animals");
   };
 
   return (
     <div className="auth">
       <h2 className="auth-title">Login</h2>
       <form className="auth-form" onSubmit={loginFormHandler}>
+        {error && <span className="err-msg">{errorMsg}</span>}
+
         <InputForm
           id="emailOrPhone"
           label="Email or Phone"
@@ -66,8 +67,6 @@ const Login = () => {
           placeholder="Password"
           type="password"
         />
-
-        {error && <span>{error}</span>}
 
         <Button text="Login" type="submit" />
         <span className="auth-helper">

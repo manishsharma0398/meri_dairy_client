@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
 import { setAnimalDetails } from "../../store/animal/animal-action-creator";
 
 import "./dashboard.styles.scss";
+import DashboardItem from "../../components/dashboard-item/DashboardItem.component";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -21,9 +23,12 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div>
-      Dashboard
+    <div className="s">
       {!allAnimals && <h2>No Animals added. Please add one</h2>}
+      {allAnimals &&
+        allAnimals.map((animal) => (
+          <DashboardItem key={animal.tag_no} animal={animal} />
+        ))}
     </div>
   );
 };

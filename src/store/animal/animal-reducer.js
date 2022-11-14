@@ -2,6 +2,7 @@ import { SET_ANIMAL_DETAILS } from "./animal-action-types";
 
 const INITIAL_STATE = {
   allAnimals: null,
+  animal: null,
 };
 
 export const animalReducer = (state = INITIAL_STATE, action) => {

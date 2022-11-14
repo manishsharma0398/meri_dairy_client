@@ -7,6 +7,7 @@ import Register from "./routes/register/Register.component";
 import Dashboard from "./routes/dashboard/Dashboard.component";
 
 import "./index.css";
+import Animal from "./routes/animal/Animal.component";
 
 const App = () => {
   // const navigate = useNavigate();
@@ -21,7 +22,8 @@ const App = () => {
       <Navigation />
       <div className="container">
         <Routes>
-          <Route exact path="/dashboard" element={<Dashboard />}></Route>
+          <Route exact path="/animals" element={<Dashboard />}></Route>
+          <Route exact path="/animals/:animalId" element={<Animal />}></Route>
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>
         </Routes>

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
+import {
+  registerUser,
+  setCurrentUserError,
+} from "../../store/user/user-action-creator";
 
 import "../Auth.styles.scss";
 
 const Register = () => {
-  const [error, setError] = useState(null);
   const [registrationFormFields, setRegistrationFormFields] = useState({
     full_name: "",
     email: "",
@@ -30,6 +33,8 @@ const Register = () => {
   } = registrationFormFields;
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, errorMsg } = useSelector((state) => state.user);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -39,25 +44,20 @@ const Register = () => {
   const registerFormHandler = async (e) => {
     e.preventDefault();
 
-    try {
-      setError(null);
-      const { confirmPassword, ...userData } = registrationFormFields;
+    const userData = await registerUser(registrationFormFields);
 
-      const res = await axios.post("/auth/register", userData);
+    const { data, error } = userData;
 
-      console.table(res.data);
-      navigate("/login");
-    } catch (err) {
-      setError(err.response.data.message);
+    if (error) return dispatch(setCurrentUserError({ error, errorMsg: data }));
 
-      console.log(err.response);
-    }
+    return navigate("/login");
   };
 
   return (
     <div className="auth">
       <h2 className="auth-title">Register</h2>
       <form className="auth-form" onSubmit={registerFormHandler}>
+        {error && <span className="err-msg">{errorMsg}</span>}
         <InputForm
           id="full_name"
           label="Full Name"
@@ -118,7 +118,7 @@ const Register = () => {
           onChangeHandler={onChangeHandler}
           placeholder="Ex - Milan More, Siliguri"
         />
-        {error && <span>{error}</span>}
+
         <Button text="Register" type="submit" />
         <span className="auth-helper">
           <Link to="/login">Already have an account ?</Link>

@@ -33,3 +33,7 @@ a {
 .container {
   padding: 0 30px;
 }
+
+.err-msg {
+  color: red;
+}
