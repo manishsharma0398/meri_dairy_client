@@ -8,13 +8,10 @@ export const setCurrentUser = (userData) => ({
   payload: userData,
 });
 
-export const setCurrentUserError = (error) => {
-  console.log(error);
-  return {
-    type: SET_CURRENT_USER_ERROR,
-    payload: error,
-  };
-};
+export const setCurrentUserError = (error) => ({
+  type: SET_CURRENT_USER_ERROR,
+  payload: error,
+});
 
 export const loginUser = async (loginData) => {
   const { emailOrPhone, password } = loginData;

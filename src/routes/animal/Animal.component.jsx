@@ -7,7 +7,7 @@ const Animal = () => {
   const params = useParams();
   console.log(params);
 
-  return <div>Animal</div>;
+  return <div>Animal: {params.animalId}</div>;
 };
 
 export default Animal;

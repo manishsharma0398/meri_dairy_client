@@ -1,0 +1,11 @@
+.radio-inputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+
+  .radio-label {
+    font-size: 18px;
+  }
+}

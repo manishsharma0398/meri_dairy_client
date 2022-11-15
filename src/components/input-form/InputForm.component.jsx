@@ -13,7 +13,9 @@ const InputForm = ({
 }) => {
   return (
     <div className="form-group">
-      <label htmlFor={id}>{label}</label>
+      <label className="label" htmlFor={id}>
+        {label}
+      </label>
       <input
         value={inputValue}
         onChange={onChangeHandler}

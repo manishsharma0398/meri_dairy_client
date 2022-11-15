@@ -1,13 +1,13 @@
+.label {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 8px;
-
-  label {
-    font-size: 22px;
-    font-weight: 500;
-    margin-bottom: 3px;
-  }
 
   input {
     padding: 8px 12px;

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -7,20 +7,20 @@ import {
   logOutUser,
   setCurrentUserError,
 } from "../../store/user/user-action-creator";
+import { setAnimalDetails } from "../../store/animal/animal-action-creator";
 
 import "./navigation.styles.scss";
 
 const Navigation = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const logOutHandler = async () => {
     try {
       await logOutUser();
       dispatch(setCurrentUser(null));
       dispatch(setCurrentUserError({ error: false, errorMsg: "" }));
-      navigate("/");
+      dispatch(setAnimalDetails(null));
     } catch (err) {
       console.log(err);
     }
@@ -33,25 +33,31 @@ const Navigation = () => {
           Dairy
         </Link>
       </div>
-      <ul className="nav-links">
-        {!currentUser && (
+      {!currentUser && (
+        <ul className="nav-links">
           <li className="nav-links-item">
             <Link to="/login">Login</Link>
           </li>
-        )}
-        {!currentUser && (
           <li className="nav-links-item">
             <Link to="/register">Register</Link>
           </li>
-        )}
-        {currentUser && (
+        </ul>
+      )}
+      {currentUser && (
+        <ul className="nav-links">
+          <li className="nav-links-item">
+            <Link to="/animals">Animals</Link>
+          </li>
+          <li className="nav-links-item">
+            <Link to="/milk">Milk</Link>
+          </li>
           <li className="nav-links-item">
             <Link onClick={logOutHandler} to="#">
               Log out
             </Link>
           </li>
-        )}
-      </ul>
+        </ul>
+      )}
     </nav>
   );
 };

@@ -42,3 +42,8 @@ a {
   display: flex;
   gap: 20px;
 }
+
+.btn-link {
+  display: inline-block;
+  text-decoration: underline;
+}
