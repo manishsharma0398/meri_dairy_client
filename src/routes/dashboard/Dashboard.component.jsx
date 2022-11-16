@@ -10,11 +10,13 @@ import DashboardItem from "../../components/dashboard-item/DashboardItem.compone
 
 import "./dashboard.styles.scss";
 import { Link } from "react-router-dom";
+import DialogBox from "../../components/dialog-box/DialogBox.component";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [err, setErr] = useState(null);
   const { allAnimals } = useSelector((state) => state.animals);
+  const { showDeleteDialogBox } = useSelector((state) => state.UI);
 
   const getAllAnimalDetails = async () => {
     console.log("Refreshing");
@@ -34,6 +36,7 @@ const Dashboard = () => {
   console.log(allAnimals);
   return (
     <div className="s">
+      {showDeleteDialogBox && <DialogBox />}
       {!allAnimals && !err && <h2>Loading...</h2>}
       {allAnimals && allAnimals.length === 0 && (
         <h2>No Animals added. Please add one</h2>
