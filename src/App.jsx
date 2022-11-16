@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import Navigation from "./routes/navigation/Navigation.component";
@@ -22,13 +22,15 @@ import Milk from "./routes/milk/Milk.component";
 
 const App = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       const userLoggedIn = await getUserDataOnRefresh();
-      if (!userLoggedIn) return;
+      console.log(userLoggedIn);
+      if (!userLoggedIn) return navigate("/login");
       dispatch(setCurrentUser(userLoggedIn));
-      // navigate("/animals");
+      navigate("/animals");
     };
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps

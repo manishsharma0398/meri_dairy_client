@@ -62,6 +62,7 @@ export const getUserDataOnRefresh = async () => {
     const encryptedText = localStorage.getItem(
       process.env.REACT_APP_CIPHER_LOCALSTORAGE_KEY
     );
+    console.log(encryptedText);
     const bytes = cryptoJs.AES.decrypt(
       encryptedText,
       process.env.REACT_APP_CIPHER_SECRET_TOKEN

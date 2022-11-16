@@ -1,6 +1,8 @@
+import axios from "axios";
 import React, { useState } from "react";
-import Button from "../../components/button/Button.component";
+import { useNavigate } from "react-router-dom";
 
+import Button from "../../components/button/Button.component";
 import InputForm from "../../components/input-form/InputForm.component";
 import RadioInput from "../../components/radio-input/RadioInput.component";
 
@@ -9,6 +11,7 @@ import { addNewAnimal } from "../../store/animal/animal-action-creator";
 import "./AddAnimal.styles.scss";
 
 const AddAnimal = () => {
+  const navigate = useNavigate();
   const [animalFields, setAnimalFields] = useState({
     identifier: "",
     breed: "",
@@ -24,6 +27,7 @@ const AddAnimal = () => {
     dam_breed: "",
   });
   const [error, setError] = useState("");
+  const [image, setImage] = useState({ preview: "", raw: "" });
 
   const {
     identifier,
@@ -37,28 +41,50 @@ const AddAnimal = () => {
   } = animalFields;
 
   const onChangeHandler = (e) => {
+    e.preventDefault();
     setAnimalFields({ ...animalFields, [e.target.name]: e.target.value });
   };
 
-  const onRadioInputChangeHandler = (e) => {
-    setAnimalFields({ ...animalFields, [e.target.name]: e.target.value });
+  const onFileChange = async (e) => {
+    if (e.target.files.length) {
+      setImage({
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0],
+      });
+    }
+  };
+
+  const uploadPhoto = async () => {
+    if (!image.raw && !image.preview) {
+      console.log("photo not selected");
+      return { error: false, data: "" };
+    }
+    try {
+      const formData = new FormData();
+      formData.append("photo_url", image.raw);
+      const res = await axios.post("/file", formData);
+      return { error: false, data: res.data.data };
+    } catch (err) {
+      console.log(err);
+      return { error: true, data: "" };
+    }
   };
 
   const addNewAnimalHandler = async (e) => {
     e.preventDefault();
-
-    console.log(animalFields);
-
-    try {
-      addNewAnimal(animalFields);
-    } catch (err) {
-      console.log(err);
-    }
+    const { error, data } = await uploadPhoto();
+    if (error) return;
+    animalFields.photo_url = data;
+    const animalAdded = await addNewAnimal(animalFields);
+    const err = animalAdded.error;
+    if (err) return;
+    return navigate("/animals");
   };
 
   return (
     <div className="auth">
       <h2 className="auth-title">Add Animal</h2>
+      {/* <form className="auth-form" onSubmit={uploadPhoto}> */}
       <form className="auth-form" onSubmit={addNewAnimalHandler}>
         {error && <span className="err-msg">{setError}</span>}
 
@@ -68,21 +94,21 @@ const AddAnimal = () => {
           label="Cow"
           name="animal_type"
           inputValue="cow"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
         <RadioInput
           id="goat"
           label="Goat"
           name="animal_type"
           inputValue="goat"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
         <RadioInput
           id="buffalo"
           label="Buffalo"
           name="animal_type"
           inputValue="buffalo"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
 
         <InputForm
@@ -107,14 +133,14 @@ const AddAnimal = () => {
           label="Male"
           name="gender"
           inputValue="male"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
         <RadioInput
           id="female"
           label="Female"
           name="gender"
           inputValue="female"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
 
         <label className="label">Animal Status</label>
@@ -123,14 +149,14 @@ const AddAnimal = () => {
           label="Purchased"
           name="animal_status"
           inputValue="purchased"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
         <RadioInput
           id="born_on_farm"
           label="Born On Farm"
           name="animal_status"
           inputValue="born_on_farm"
-          onChangeHandler={onRadioInputChangeHandler}
+          onChangeHandler={onChangeHandler}
         />
 
         <InputForm
@@ -182,6 +208,30 @@ const AddAnimal = () => {
           onChangeHandler={onChangeHandler}
           placeholder="Dam Breed"
         />
+
+        <div className="img-container">
+          <div className="img-preview">
+            {image.raw || image.preview ? (
+              <img width="100%" src={image.preview} alt="" />
+            ) : (
+              <h1>No Image Selected</h1>
+            )}
+          </div>
+
+          <div className="img-actions">
+            <button type="button" className="select">
+              <label htmlFor="imgFile">Select Image</label>
+              <input type="file" id="imgFile" onChange={onFileChange} />
+            </button>
+            <button
+              className="clear"
+              onClick={() => setImage({ preview: "", raw: "" })}
+              type="button"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
 
         <Button text="Add Animal" type="submit" />
       </form>
