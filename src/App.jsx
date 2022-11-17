@@ -19,6 +19,7 @@ import {
 
 import "./index.css";
 import Milk from "./routes/milk/Milk.component";
+import AddMilk from "./routes/add-milk/AddMilk.component";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,12 @@ const App = () => {
             <Route exact path="/animals/add" element={<AddAnimal />}></Route>
             <Route exact path="/animals/:animalId" element={<Animal />}></Route>
             <Route exact path="/milk" element={<Milk />}></Route>
+            <Route exact path="/milk/add" element={<AddMilk />}></Route>
+            <Route
+              exact
+              path="/milk/edit/:milkId"
+              element={<AddMilk />}
+            ></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

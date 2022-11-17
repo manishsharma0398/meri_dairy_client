@@ -47,3 +47,19 @@ a {
   display: inline-block;
   text-decoration: underline;
 }
+
+table {
+  width: 500px;
+  /* height: 200px; */
+  border-collapse: collapse;
+}
+
+th {
+  border-bottom: 1px solid black;
+  border: 2px solid black;
+}
+
+td {
+  text-align: center;
+  border: 2px solid black;
+}

@@ -84,7 +84,6 @@ const AddAnimal = () => {
   return (
     <div className="auth">
       <h2 className="auth-title">Add Animal</h2>
-      {/* <form className="auth-form" onSubmit={uploadPhoto}> */}
       <form className="auth-form" onSubmit={addNewAnimalHandler}>
         {error && <span className="err-msg">{setError}</span>}
 
