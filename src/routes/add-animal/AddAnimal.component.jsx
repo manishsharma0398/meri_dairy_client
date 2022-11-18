@@ -1,10 +1,13 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { parseDate } from "../../utils/dateParser";
-import { addNewAnimal } from "../../store/animal/animal-action-creator";
+import {
+  addNewAnimal,
+  updateAnimal,
+} from "../../store/animal/animal-action-creator";
 
 import Button from "../../components/button/Button.component";
 import InputForm from "../../components/input-form/InputForm.component";
@@ -108,8 +111,13 @@ const AddAnimal = () => {
     return navigate("/animals");
   };
 
-  const updateAnimalHandler = (e) => {
+  const updateAnimalHandler = async (e) => {
     e.preventDefault();
+    const { id, user_id, ...restFields } = animalFields;
+    console.log(restFields);
+    const { error } = await updateAnimal(restFields, id);
+    if (error) return;
+    navigate("/animals");
   };
 
   return (

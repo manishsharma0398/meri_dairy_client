@@ -6,6 +6,15 @@ export const setAnimalDetails = (animalDetails) => ({
   payload: animalDetails,
 });
 
+export const addNewAnimal = async (animalDetails) => {
+  try {
+    const animalData = await axios.post("/animals/add", animalDetails);
+    return { ...animalData.data, error: false };
+  } catch (err) {
+    return { error: true, data: err.response.data.message };
+  }
+};
+
 export const getAllAnimals = async () => {
   try {
     const animalData = await axios.get("/animals/all");
@@ -15,12 +24,12 @@ export const getAllAnimals = async () => {
   }
 };
 
-export const addNewAnimal = async (animalDetails) => {
+export const updateAnimal = async (animalDetails, animalId) => {
   try {
-    const animalData = await axios.post("/animals/add", animalDetails);
-    return { ...animalData.data, error: false };
+    await axios.put(`/animals/${animalId}`, animalDetails);
+    return { error: false, message: "Animal Record Added Successfully" };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { error: true, message: err.response.data.message };
   }
 };
 

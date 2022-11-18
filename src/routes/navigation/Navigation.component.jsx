@@ -29,7 +29,7 @@ const Navigation = () => {
   return (
     <nav className="navigation">
       <div className="logo-container">
-        <Link className="logo" to="/animals">
+        <Link className="logo" to={currentUser ? "/animals" : "/"}>
           Dairy
         </Link>
       </div>
