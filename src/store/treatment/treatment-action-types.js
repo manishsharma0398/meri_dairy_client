@@ -1,0 +1,1 @@
+export const SET_TREATMENT_DATA = "SET_TREATMENT_DATA";

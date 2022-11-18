@@ -25,6 +25,8 @@ import Worker from "./routes/workers/Worker.component";
 import AddWorker from "./routes/add-worker/AddWorker.component";
 import Transaction from "./routes/transaction/Transaction.component";
 import AddTransaction from "./routes/add-transaction/AddTransaction";
+import Treatment from "./routes/treatment/Treatment.component";
+import AddTreatment from "./routes/add-treatment/AddTreatment.component";
 
 import "./index.css";
 
@@ -35,7 +37,6 @@ const App = () => {
   useEffect(() => {
     const getData = async () => {
       const userLoggedIn = await getUserDataOnRefresh();
-      console.log(userLoggedIn);
       if (!userLoggedIn) return navigate("/login");
       dispatch(setCurrentUser(userLoggedIn));
       navigate("/animals");
@@ -77,6 +78,17 @@ const App = () => {
               exact
               path="/transactions/edit"
               element={<AddTransaction />}
+            ></Route>
+            <Route exact path="/treatment" element={<Treatment />}></Route>
+            <Route
+              exact
+              path="/treatment/add"
+              element={<AddTreatment />}
+            ></Route>
+            <Route
+              exact
+              path="/treatment/edit"
+              element={<AddTreatment />}
             ></Route>
           </Route>
           <Route element={<PublicRoutes />}>
