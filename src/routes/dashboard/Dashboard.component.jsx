@@ -19,7 +19,6 @@ const Dashboard = () => {
   const { showDeleteDialogBox } = useSelector((state) => state.UI);
 
   const getAllAnimalDetails = async () => {
-    console.log("Refreshing");
     const animalData = await getAllAnimals();
     const { data, error } = animalData;
 
@@ -33,7 +32,7 @@ const Dashboard = () => {
     getAllAnimalDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(allAnimals);
+
   return (
     <div className="s">
       {showDeleteDialogBox && <DialogBox />}
@@ -42,7 +41,11 @@ const Dashboard = () => {
         <h2>No Animals added. Please add one</h2>
       )}
       {!err && (
-        <Link className="btn btn-link" to="/animals/add">
+        <Link
+          state={{ page: "addAnimal", animalId: null }}
+          className="btn btn-link"
+          to="/animals/add"
+        >
           Add New Animal
         </Link>
       )}

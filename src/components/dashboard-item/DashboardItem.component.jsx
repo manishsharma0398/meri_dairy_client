@@ -23,7 +23,12 @@ const DashboardItem = ({ animal }) => {
         <h5 className="card-body-title">
           <Link to={`/animals/${id}`}>{identifier}</Link>
           <div className="actions">
-            <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
+            <Link
+              state={{ page: "editAnimal", animalId: id }}
+              to={`/animals/edit`}
+            >
+              <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
+            </Link>
             <FiTrash2
               onClick={deleteAnimalHandler}
               className="act"

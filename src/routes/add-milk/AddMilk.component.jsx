@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import InputForm from "../../components/input-form/InputForm.component";
-import Button from "../../components/button/Button.component";
+import { parseDate } from "../../utils/dateParser";
 
 import {
   addMilkData,
   updateMilkData,
 } from "../../store/milk/milk-action-creator";
+
+import InputForm from "../../components/input-form/InputForm.component";
+import Button from "../../components/button/Button.component";
 
 const AddMilk = () => {
   const { milkData } = useSelector((state) => state.milk);
@@ -27,15 +29,10 @@ const AddMilk = () => {
     if (page === "addMilk") return;
     const milkD = milkData.filter((m) => m.id === milkId)[0];
 
-    const m = new Date(milkD.date);
-    const a = m.getDate();
-    const fd = `${m.getFullYear()}-${m.getMonth() + 1}-${a > 9 ? a : `0${a}`}`;
-    console.log(fd);
-
     setMilkFields({
       ...milkFields,
       animal: milkD.a_id,
-      date: fd,
+      date: parseDate(milkD.date),
       time: milkD.time,
       quantity: milkD.quantity,
     });

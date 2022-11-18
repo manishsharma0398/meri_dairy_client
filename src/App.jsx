@@ -2,24 +2,26 @@ import React, { Fragment, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import {
+  getUserDataOnRefresh,
+  setCurrentUser,
+} from "./store/user/user-action-creator";
+
+import PrivateRoutes from "./utils/PrivateRoutes";
+import PublicRoutes from "./utils/PublicRoutes";
+
 import Navigation from "./routes/navigation/Navigation.component";
 import Login from "./routes/login/Login.component";
 import Register from "./routes/register/Register.component";
 import Dashboard from "./routes/dashboard/Dashboard.component";
 import Animal from "./routes/animal/Animal.component";
 import Homepage from "./routes/homepage/Homepage.component";
-import PrivateRoutes from "./utils/PrivateRoutes";
-import PublicRoutes from "./utils/PublicRoutes";
 import AddAnimal from "./routes/add-animal/AddAnimal.component";
-
-import {
-  getUserDataOnRefresh,
-  setCurrentUser,
-} from "./store/user/user-action-creator";
-
-import "./index.css";
 import Milk from "./routes/milk/Milk.component";
 import AddMilk from "./routes/add-milk/AddMilk.component";
+import Mating from "./routes/mating/Mating.component";
+
+import "./index.css";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -45,6 +47,7 @@ const App = () => {
           <Route element={<PrivateRoutes />}>
             <Route exact path="/animals" element={<Dashboard />}></Route>
             <Route exact path="/animals/add" element={<AddAnimal />}></Route>
+            <Route exact path="/animals/edit" element={<AddAnimal />}></Route>
             <Route exact path="/animals/:animalId" element={<Animal />}></Route>
             <Route exact path="/milk" element={<Milk />}></Route>
             <Route exact path="/milk/add" element={<AddMilk />}></Route>
@@ -53,6 +56,7 @@ const App = () => {
               path="/milk/edit/:milkId"
               element={<AddMilk />}
             ></Route>
+            <Route exact path="/mating" element={<Mating />}></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

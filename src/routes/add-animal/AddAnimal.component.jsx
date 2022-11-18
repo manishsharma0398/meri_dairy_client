@@ -1,17 +1,21 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { parseDate } from "../../utils/dateParser";
+import { addNewAnimal } from "../../store/animal/animal-action-creator";
 
 import Button from "../../components/button/Button.component";
 import InputForm from "../../components/input-form/InputForm.component";
 import RadioInput from "../../components/radio-input/RadioInput.component";
 
-import { addNewAnimal } from "../../store/animal/animal-action-creator";
-
 import "./AddAnimal.styles.scss";
 
 const AddAnimal = () => {
+  const { page, animalId } = useLocation().state;
   const navigate = useNavigate();
+  const { allAnimals } = useSelector((state) => state.animals);
   const [animalFields, setAnimalFields] = useState({
     identifier: "",
     breed: "",
@@ -38,7 +42,30 @@ const AddAnimal = () => {
     dam_name,
     bull_breed,
     dam_breed,
+    animal_type,
+    animal_status,
+    gender,
   } = animalFields;
+
+  const fillUpdtAnimalFields = () => {
+    const d = allAnimals.filter((a) => a.id === animalId)[0];
+    console.log(d);
+    if (d.photo_url.length > 0) {
+      setImage({
+        preview: d.photo_url,
+        raw: d.photo_url,
+      });
+    }
+    setAnimalFields(
+      { ...d, date: parseDate(d.date) },
+      console.log(animalFields)
+    );
+  };
+
+  useEffect(() => {
+    if (page === "editAnimal") fillUpdtAnimalFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onChangeHandler = (e) => {
     e.preventDefault();
@@ -81,10 +108,21 @@ const AddAnimal = () => {
     return navigate("/animals");
   };
 
+  const updateAnimalHandler = (e) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="auth">
-      <h2 className="auth-title">Add Animal</h2>
-      <form className="auth-form" onSubmit={addNewAnimalHandler}>
+      <h2 className="auth-title">
+        {page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
+      </h2>
+      <form
+        className="auth-form"
+        onSubmit={
+          page === "addAnimal" ? addNewAnimalHandler : updateAnimalHandler
+        }
+      >
         {error && <span className="err-msg">{setError}</span>}
 
         <label className="label">Animal</label>
@@ -94,6 +132,7 @@ const AddAnimal = () => {
           name="animal_type"
           inputValue="cow"
           onChangeHandler={onChangeHandler}
+          checked={animal_type === "cow"}
         />
         <RadioInput
           id="goat"
@@ -101,6 +140,7 @@ const AddAnimal = () => {
           name="animal_type"
           inputValue="goat"
           onChangeHandler={onChangeHandler}
+          checked={animal_type === "goat"}
         />
         <RadioInput
           id="buffalo"
@@ -108,6 +148,7 @@ const AddAnimal = () => {
           name="animal_type"
           inputValue="buffalo"
           onChangeHandler={onChangeHandler}
+          checked={animal_type === "buffalo"}
         />
 
         <InputForm
@@ -133,6 +174,7 @@ const AddAnimal = () => {
           name="gender"
           inputValue="male"
           onChangeHandler={onChangeHandler}
+          checked={gender === "male"}
         />
         <RadioInput
           id="female"
@@ -140,6 +182,7 @@ const AddAnimal = () => {
           name="gender"
           inputValue="female"
           onChangeHandler={onChangeHandler}
+          checked={gender === "female"}
         />
 
         <label className="label">Animal Status</label>
@@ -149,6 +192,7 @@ const AddAnimal = () => {
           name="animal_status"
           inputValue="purchased"
           onChangeHandler={onChangeHandler}
+          checked={animal_status === "purchased"}
         />
         <RadioInput
           id="born_on_farm"
@@ -156,6 +200,7 @@ const AddAnimal = () => {
           name="animal_status"
           inputValue="born_on_farm"
           onChangeHandler={onChangeHandler}
+          checked={animal_status === "born_on_farm"}
         />
 
         <InputForm
@@ -232,7 +277,10 @@ const AddAnimal = () => {
           </div>
         </div>
 
-        <Button text="Add Animal" type="submit" />
+        <Button
+          text={page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
+          type="submit"
+        />
       </form>
     </div>
   );
