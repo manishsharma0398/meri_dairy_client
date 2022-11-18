@@ -23,6 +23,7 @@ const DialogBox = () => {
       );
     }
 
+    // TODO: define in a separate file
     if (e.target.className === "delete-animal") {
       const { error, data } = await deleteAnimal(animalId);
       if (error) return alert(data);
