@@ -5,6 +5,7 @@ import { UIReducer } from "./ui/ui-reducer";
 import { milkReducer } from "./milk/milk-reducer";
 import { healthReducer } from "./health/health-reducer";
 import { workerReducer } from "./worker/worker-reducer";
+import { transactionReducer } from "./transaction/transaction-reducer";
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -13,4 +14,5 @@ export const rootReducer = combineReducers({
   milk: milkReducer,
   health: healthReducer,
   worker: workerReducer,
+  transaction: transactionReducer,
 });

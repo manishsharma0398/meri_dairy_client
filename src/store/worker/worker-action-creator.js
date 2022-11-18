@@ -7,22 +7,16 @@ export const setWorkerData = (workerData) => ({
 });
 
 export const addWorkerData = async (workerDetails) => {
-  console.log(workerDetails);
   try {
-    console.log("adding worker data to server");
-    const res = await axios.post("/worker/add", workerDetails);
-    console.log(res);
+    await axios.post("/worker/add", workerDetails);
     return { error: false, message: "Worker Record Added Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
 
 export const updateWorkerData = async (workerDetails, workerId) => {
-  console.log(workerDetails, workerId);
   try {
-    console.log("updating health data from server");
     const res = await axios.put(`/worker/${workerId}`, workerDetails);
     console.log(res);
     return { error: false, message: "Worker Record Updated" };
@@ -35,21 +29,17 @@ export const updateWorkerData = async (workerDetails, workerId) => {
 export const getWorkerData = async () => {
   try {
     const res = await axios.get("/worker/all");
-    console.log(res);
     return { error: false, data: res.data };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
 
 export const deleteWorkerData = async (id) => {
   try {
-    const res = await axios.delete(`/worker/${id}`);
-    console.log(res);
-    return { error: false, data: res.data };
+    await axios.delete(`/worker/${id}`);
+    return { error: false, message: "Worker Deleted Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

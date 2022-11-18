@@ -58,6 +58,9 @@ const Navigation = () => {
             <Link to="/workers">Workers</Link>
           </li>
           <li className="nav-links-item">
+            <Link to="/transactions">Transactions</Link>
+          </li>
+          <li className="nav-links-item">
             <Link onClick={logOutHandler} to="#">
               Log out
             </Link>

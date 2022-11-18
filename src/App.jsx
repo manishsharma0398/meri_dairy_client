@@ -23,6 +23,8 @@ import Health from "./routes/health/Health.component";
 import AddHealth from "./routes/add-health/AddHealth.component";
 import Worker from "./routes/workers/Worker.component";
 import AddWorker from "./routes/add-worker/AddWorker.component";
+import Transaction from "./routes/transaction/Transaction.component";
+import AddTransaction from "./routes/add-transaction/AddTransaction";
 
 import "./index.css";
 
@@ -65,6 +67,17 @@ const App = () => {
             <Route exact path="/workers" element={<Worker />}></Route>
             <Route exact path="/workers/add" element={<AddWorker />}></Route>
             <Route exact path="/workers/edit" element={<AddWorker />}></Route>
+            <Route exact path="/transactions" element={<Transaction />}></Route>
+            <Route
+              exact
+              path="/transactions/add"
+              element={<AddTransaction />}
+            ></Route>
+            <Route
+              exact
+              path="/transactions/edit"
+              element={<AddTransaction />}
+            ></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

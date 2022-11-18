@@ -8,7 +8,6 @@ export const setAnimalDetails = (animalDetails) => ({
 
 export const getAllAnimals = async () => {
   try {
-    console.log("fetching");
     const animalData = await axios.get("/animals/all");
     return { ...animalData.data, error: false };
   } catch (err) {
@@ -27,9 +26,8 @@ export const addNewAnimal = async (animalDetails) => {
 
 export const deleteAnimal = async (animalId) => {
   try {
-    console.log(animalId);
-    const deletedAnimal = await axios.delete(`/animals/${animalId}`);
-    return { error: false, data: deletedAnimal.data };
+    await axios.delete(`/animals/${animalId}`);
+    return { error: false, message: "Animal Deleted" };
   } catch (err) {
     return { error: true, data: err.response.data.message };
   }

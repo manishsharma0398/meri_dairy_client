@@ -7,14 +7,10 @@ export const setHealthData = (healthData) => ({
 });
 
 export const addHealthData = async (healthDetails) => {
-  console.log(healthDetails);
   try {
-    console.log("adding health data from server");
-    const res = await axios.post("/health/add", healthDetails);
-    console.log(res);
-    return { error: false, message: "Milk Record Added Successfully" };
+    await axios.post("/health/add", healthDetails);
+    return { error: false, message: "Health Added" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
@@ -37,21 +33,17 @@ export const updateHealthData = async (healthDetails, healthId) => {
 export const getHealthData = async () => {
   try {
     const res = await axios.get("/health/all");
-    console.log(res);
     return { error: false, data: res.data };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
 
 export const deleteHealthData = async (id) => {
   try {
-    const res = await axios.delete(`/health/${id}`);
-    console.log(res);
-    return { error: false, data: res.data };
+    await axios.delete(`/health/${id}`);
+    return { error: false, message: "Health Deleted Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

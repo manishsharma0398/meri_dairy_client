@@ -8,12 +8,9 @@ export const setMilkData = (milkData) => ({
 
 export const addMilkData = async (milkDetails) => {
   try {
-    console.log("getting milk data from server");
-    const res = await axios.post("/milk/add", milkDetails);
-    console.log(res);
+    await axios.post("/milk/add", milkDetails);
     return { error: false, message: "Milk Record Added Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
@@ -36,21 +33,17 @@ export const updateMilkData = async (milkDetails, milkId) => {
 export const getMilkData = async () => {
   try {
     const res = await axios.get("/milk/all");
-    console.log(res);
     return { error: false, data: res.data };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
 
 export const deleteMilkData = async (id) => {
   try {
-    const res = await axios.delete(`/milk/${id}`);
-    console.log(res);
-    return { error: false, data: res.data };
+    await axios.delete(`/milk/${id}`);
+    return { error: false, message: "Milk Record Deleted" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };
