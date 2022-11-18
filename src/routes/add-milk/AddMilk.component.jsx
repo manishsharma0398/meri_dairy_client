@@ -17,24 +17,24 @@ const AddMilk = () => {
   const navigate = useNavigate();
   const { page, milkId } = useLocation().state;
   const [milkFields, setMilkFields] = useState({
-    animal: "",
+    a_id: "",
     time: "",
     date: "",
     quantity: "",
   });
 
-  const { animal, time, date, quantity } = milkFields;
+  const { a_id, time, date, quantity } = milkFields;
 
   useEffect(() => {
     if (page === "addMilk") return;
     const milkD = milkData.filter((m) => m.id === milkId)[0];
-
+    const { a_id, time, date, quantity } = milkD;
     setMilkFields({
       ...milkFields,
-      animal: milkD.a_id,
-      date: parseDate(milkD.date),
-      time: milkD.time,
-      quantity: milkD.quantity,
+      a_id,
+      date: parseDate(date),
+      time,
+      quantity,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -65,10 +65,10 @@ const AddMilk = () => {
         {/* {error && <span className="err-msg">{errorMsg}</span>} */}
 
         <InputForm
-          id="animal"
+          id="a_id"
           label="Animal"
-          name="animal"
-          inputValue={animal}
+          name="a_id"
+          inputValue={a_id}
           onChangeHandler={onChangeHandler}
           placeholder="Animal"
         />

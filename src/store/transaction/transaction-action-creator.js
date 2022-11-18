@@ -18,11 +18,9 @@ export const addTransactionData = async (transactionDetails) => {
 
 export const updateTransactionData = async (transaction, transId) => {
   try {
-    const res = await axios.put(`/transaction/${transId}`, transaction);
-    console.log(res);
+    await axios.put(`/transaction/${transId}`, transaction);
     return { error: false, message: "Transaction Updated Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

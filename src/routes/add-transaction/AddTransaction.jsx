@@ -30,14 +30,16 @@ const AddTransaction = () => {
     if (page === "addTransaction") return;
     const trans = transactions.filter((m) => m.id === transactId)[0];
 
+    const { title, remarks, amount, mode, type, date } = trans;
+
     setTransactionFields({
       ...transactionFields,
-      title: trans.title,
-      remarks: trans.remarks,
-      amount: trans.amount,
-      mode: trans.mode,
-      type: trans.type,
-      date: parseDate(trans.date),
+      title,
+      remarks,
+      amount,
+      mode,
+      type,
+      date: parseDate(date),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,14 +54,10 @@ const AddTransaction = () => {
   const transactionFormHandler = async (e) => {
     e.preventDefault();
 
-    const tr =
+    const { error } =
       page === "addTransaction"
         ? await addTransactionData(transactionFields)
         : await updateTransactionData(transactionFields, transactId);
-
-    console.log(tr);
-
-    const { error } = tr;
     if (error) return;
     navigate("/transactions");
   };

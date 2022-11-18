@@ -41,16 +41,27 @@ const AddTreatment = () => {
     if (page === "addTreatment") return;
     const trans = treatmentData.filter((m) => m.id === treatmentId)[0];
 
+    const {
+      animal_id,
+      date,
+      vet_name,
+      medicine_with_quantity,
+      disease,
+      disease_remarks,
+      treatment_remarks,
+      cost,
+    } = trans;
+
     setTreatmentFields({
       ...treatmentFields,
-      animal_id: trans.animal_id,
-      vet_name: trans.vet_name,
-      medicine_with_quantity: trans.medicine_with_quantity,
-      disease: trans.disease,
-      disease_remarks: trans.disease_remarks,
-      treatment_remarks: trans.treatment_remarks,
-      cost: trans.cost,
-      date: parseDate(trans.date),
+      animal_id,
+      vet_name,
+      medicine_with_quantity,
+      disease,
+      disease_remarks,
+      treatment_remarks,
+      cost,
+      date: parseDate(date),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -65,14 +76,11 @@ const AddTreatment = () => {
   const treatmentFormHandler = async (e) => {
     e.preventDefault();
 
-    const tr =
+    const { error } =
       page === "addTreatment"
         ? await addTreatmentData(treatmentFields)
         : await updateTreatmentData(treatmentFields, treatmentId);
 
-    console.log(tr);
-
-    const { error } = tr;
     if (error) return;
     navigate("/treatment");
   };
@@ -146,7 +154,7 @@ const AddTreatment = () => {
           id="date"
           label="Date"
           name="date"
-          inputValue={parseDate(date)}
+          inputValue={date}
           onChangeHandler={onChangeHandler}
           placeholder="Date"
           type="date"

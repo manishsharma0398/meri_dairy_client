@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
+import moment from "moment";
 
 import {
   getTransactionData,
   setTransactionData,
   deleteTransaction,
 } from "../../store/transaction/transaction-action-creator";
-import moment from "moment";
 
 const Transaction = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,6 @@ const Transaction = () => {
   const getTransactions = async () => {
     const { error, data } = await getTransactionData();
     if (error) return;
-    console.log(data);
     dispatch(setTransactionData(data));
   };
 
@@ -27,11 +26,9 @@ const Transaction = () => {
   }, []);
 
   const deleteTransactionHandler = async (id) => {
-    console.log("delete transaction handler");
     const { error } = await deleteTransaction(id);
     if (error) return;
     const updTransactRecords = transactions.filter((m) => m.id !== id);
-    console.log(updTransactRecords);
     dispatch(setTransactionData(updTransactRecords));
   };
 

@@ -6,21 +6,15 @@ import MilkItem from "../../components/milk-item/MilkItem.component";
 
 import { getMilkData, setMilkData } from "../../store/milk/milk-action-creator";
 
-// import DialogBox from "../../components/dialog-box/DialogBox.component";
-
 const Milk = () => {
   const dispatch = useDispatch();
   const [err, setErr] = useState(null);
   const { milkData } = useSelector((state) => state.milk);
-  // const { showDeleteDialogBox } = useSelector((state) => state.UI);
 
   const getAllMilkRecords = async () => {
-    console.log("Fetching all milk records");
     const animalData = await getMilkData();
     const { data, error } = animalData;
-
     if (error) return setErr(error);
-
     setErr(null);
     dispatch(setMilkData(data));
   };

@@ -17,11 +17,9 @@ export const addTreatmentData = async (treatmentDetails) => {
 
 export const updateTreatmentData = async (treatmentDetails, treatmentId) => {
   try {
-    const res = await axios.put(`/treatment/${treatmentId}`, treatmentDetails);
-    console.log(res);
+    await axios.put(`/treatment/${treatmentId}`, treatmentDetails);
     return { error: false, message: "Treatment Record Updated" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

@@ -1,5 +1,6 @@
-import { SET_WORKER_RECORDS } from "./worker-action-types";
 import axios from "axios";
+
+import { SET_WORKER_RECORDS } from "./worker-action-types";
 
 export const setWorkerData = (workerData) => ({
   type: SET_WORKER_RECORDS,

@@ -17,7 +17,6 @@ const Workers = () => {
   const getWorkers = async () => {
     const { error, data } = await getWorkerData();
     if (error) return;
-    console.log(data);
     dispatch(setWorkerData(data));
   };
 
@@ -27,11 +26,9 @@ const Workers = () => {
   }, []);
 
   const deleteWorkerHandler = async (id) => {
-    console.log("delete worker handler");
     const { error } = await deleteWorkerData(id);
     if (error) return;
     const updWorkersRecords = workers.filter((m) => m.id !== id);
-    console.log(updWorkersRecords);
     dispatch(setWorkerData(updWorkersRecords));
   };
 

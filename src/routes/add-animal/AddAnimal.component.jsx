@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { parseDate } from "../../utils/dateParser";
+
 import {
   addNewAnimal,
   updateAnimal,
@@ -52,7 +53,6 @@ const AddAnimal = () => {
 
   const fillUpdtAnimalFields = () => {
     const d = allAnimals.filter((a) => a.id === animalId)[0];
-
     if (d.photo_url.length > 0) {
       setImage({
         preview: d.photo_url,

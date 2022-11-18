@@ -16,16 +16,10 @@ export const addMilkData = async (milkDetails) => {
 };
 
 export const updateMilkData = async (milkDetails, milkId) => {
-  const { animal, time, date, quantity } = milkDetails;
-  const dataToSend = { animal, time, date, quantity };
-  console.log(milkDetails, milkId);
   try {
-    console.log("updating milk data from server");
-    const res = await axios.put(`/milk/${milkId}`, dataToSend);
-    console.log(res);
-    return { error: false, message: "Milk Record Updated Successfully" };
+    await axios.put(`/milk/${milkId}`, milkDetails);
+    return { error: false, message: "Updated Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

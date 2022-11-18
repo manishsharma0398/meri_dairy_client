@@ -4,7 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { parseDate } from "../../utils/dateParser";
-import { addWorkerData } from "../../store/worker/worker-action-creator";
+import {
+  addWorkerData,
+  updateWorkerData,
+} from "../../store/worker/worker-action-creator";
 
 import Button from "../../components/button/Button.component";
 import InputForm from "../../components/input-form/InputForm.component";
@@ -29,17 +32,13 @@ const AddWorker = () => {
 
   const fillWorkersFields = () => {
     const d = workers.filter((a) => a.id === workerId)[0];
-    console.log(d);
     if (d.profile_pic.length > 0) {
       setImage({
         preview: d.profile_pic,
         raw: d.profile_pic,
       });
     }
-    setWorkerDetails(
-      { ...d, date_joined: parseDate(d.date_joined) },
-      console.log(workerDetails)
-    );
+    setWorkerDetails({ ...d, date_joined: parseDate(d.date_joined) });
   };
 
   useEffect(() => {
@@ -82,14 +81,16 @@ const AddWorker = () => {
     const { error, data } = await uploadPhoto();
     if (error) return;
     workerDetails.profile_pic = data;
-    const workerAdded = await addWorkerData(workerDetails);
-    const err = workerAdded.error;
+    const { error: err } = await addWorkerData(workerDetails);
     if (err) return;
     return navigate("/workers");
   };
 
-  const updateWorkerHandler = (e) => {
+  const updateWorkerHandler = async (e) => {
     e.preventDefault();
+    const { error } = await updateWorkerData(workerDetails, workerId);
+    if (error) return;
+    return navigate("/workers");
   };
 
   return (
