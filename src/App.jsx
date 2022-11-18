@@ -27,6 +27,8 @@ import Transaction from "./routes/transaction/Transaction.component";
 import AddTransaction from "./routes/add-transaction/AddTransaction";
 import Treatment from "./routes/treatment/Treatment.component";
 import AddTreatment from "./routes/add-treatment/AddTreatment.component";
+import Mating from "./routes/mating/Mating.component";
+import AddMating from "./routes/add-mating/AddMating.component";
 
 import "./index.css";
 
@@ -90,6 +92,9 @@ const App = () => {
               path="/treatment/edit"
               element={<AddTreatment />}
             ></Route>
+            <Route exact path="/mating" element={<Mating />}></Route>
+            <Route exact path="/mating/add" element={<AddMating />}></Route>
+            <Route exact path="/mating/edit" element={<AddMating />}></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

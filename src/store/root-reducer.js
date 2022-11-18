@@ -8,6 +8,7 @@ import { healthReducer } from "./health/health-reducer";
 import { workerReducer } from "./worker/worker-reducer";
 import { transactionReducer } from "./transaction/transaction-reducer";
 import { treatmentReducer } from "./treatment/treatment-reducer";
+import { matingReducer } from "./mating/mating-reducer";
 
 export const rootReducer = combineReducers({
   user: userReducer,
@@ -18,4 +19,5 @@ export const rootReducer = combineReducers({
   worker: workerReducer,
   transaction: transactionReducer,
   treatment: treatmentReducer,
+  mating: matingReducer,
 });

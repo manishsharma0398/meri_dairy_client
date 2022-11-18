@@ -1,0 +1,1 @@
+export const SET_MATING_DATA = "SET_MATING_DATA";
