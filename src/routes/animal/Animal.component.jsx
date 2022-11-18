@@ -43,11 +43,8 @@ const Animal = () => {
     );
     setMilkRecords(thisAnimalMilkRecords);
 
-    console.log(thisAnimalMilkRecords);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(animalDetails);
 
   const {
     identifier,

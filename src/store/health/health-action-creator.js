@@ -16,16 +16,10 @@ export const addHealthData = async (healthDetails) => {
 };
 
 export const updateHealthData = async (healthDetails, healthId) => {
-  const { animal_id, treatment_type, date, medicine } = healthDetails;
-  const dataToSend = { animal_id, treatment_type, date, medicine };
-  console.log(healthDetails, healthId);
   try {
-    console.log("updating health data from server");
-    const res = await axios.put(`/health/${healthId}`, dataToSend);
-    console.log(res);
+    await axios.put(`/health/${healthId}`, healthDetails);
     return { error: false, message: "Health Record Updated Successfully" };
   } catch (err) {
-    console.log(err);
     return { error: true, message: err.response.data.message };
   }
 };

@@ -27,12 +27,14 @@ const AddHealth = () => {
     if (page === "addHealth") return;
     const milkD = healthRecords.filter((m) => m.id === healthId)[0];
 
+    const { animal_id, treatment_type, medicine, date } = milkD;
+
     setHealthFields({
       ...healthFields,
-      animal_id: milkD.animal_id,
-      treatment_type: milkD.treatment_type,
-      medicine: milkD.medicine,
-      date: parseDate(milkD.date),
+      animal_id,
+      treatment_type,
+      medicine,
+      date: parseDate(date),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -49,11 +51,9 @@ const AddHealth = () => {
         ? await addHealthData(healthFields)
         : await updateHealthData(healthFields, healthId);
 
-    console.log(healthD);
-
     const { error } = healthD;
     if (error) return;
-    navigate("/health");
+    return navigate("/health");
   };
 
   return (

@@ -16,7 +16,6 @@ const Health = () => {
   const health = async () => {
     const { error, data } = await getHealthData();
     if (error) return;
-    console.log(data);
     dispatch(setHealthData(data));
   };
 
@@ -26,11 +25,9 @@ const Health = () => {
   }, []);
 
   const deleteHealthHandler = async (id) => {
-    console.log("delete health handler");
     const { error } = await deleteHealthData(id);
     if (error) return;
     const updMilkRecords = healthRecords.filter((m) => m.id !== id);
-    console.log(updMilkRecords);
     dispatch(setHealthData(updMilkRecords));
   };
 

@@ -52,17 +52,14 @@ const AddAnimal = () => {
 
   const fillUpdtAnimalFields = () => {
     const d = allAnimals.filter((a) => a.id === animalId)[0];
-    console.log(d);
+
     if (d.photo_url.length > 0) {
       setImage({
         preview: d.photo_url,
         raw: d.photo_url,
       });
     }
-    setAnimalFields(
-      { ...d, date: parseDate(d.date) },
-      console.log(animalFields)
-    );
+    setAnimalFields({ ...d, date: parseDate(d.date) });
   };
 
   useEffect(() => {
@@ -95,7 +92,6 @@ const AddAnimal = () => {
       const res = await axios.post("/file", formData);
       return { error: false, data: res.data.data };
     } catch (err) {
-      console.log(err);
       return { error: true, data: "" };
     }
   };
