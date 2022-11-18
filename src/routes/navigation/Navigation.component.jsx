@@ -52,7 +52,7 @@ const Navigation = () => {
             <Link to="/milk">Milk</Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/mating">Mating</Link>
+            <Link to="/health">Health</Link>
           </li>
           <li className="nav-links-item">
             <Link onClick={logOutHandler} to="#">

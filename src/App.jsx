@@ -19,7 +19,8 @@ import Homepage from "./routes/homepage/Homepage.component";
 import AddAnimal from "./routes/add-animal/AddAnimal.component";
 import Milk from "./routes/milk/Milk.component";
 import AddMilk from "./routes/add-milk/AddMilk.component";
-import Mating from "./routes/mating/Mating.component";
+import Health from "./routes/health/Health.component";
+import AddHealth from "./routes/add-health/AddHealth.component";
 
 import "./index.css";
 
@@ -56,7 +57,9 @@ const App = () => {
               path="/milk/edit/:milkId"
               element={<AddMilk />}
             ></Route>
-            <Route exact path="/mating" element={<Mating />}></Route>
+            <Route exact path="/health" element={<Health />}></Route>
+            <Route exact path="/health/add" element={<AddHealth />}></Route>
+            <Route exact path="/health/edit" element={<AddHealth />}></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

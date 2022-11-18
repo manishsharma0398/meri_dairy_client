@@ -1,0 +1,1 @@
+export const SET_HEALTH_RECORDS = "SET_HEALTH_RECORDS";
