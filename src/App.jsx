@@ -14,13 +14,15 @@ import Navigation from "./routes/navigation/Navigation.component";
 import Login from "./routes/login/Login.component";
 import Register from "./routes/register/Register.component";
 import Dashboard from "./routes/dashboard/Dashboard.component";
-import Animal from "./routes/animal/Animal.component";
 import Homepage from "./routes/homepage/Homepage.component";
+import Animal from "./routes/animal/Animal.component";
 import AddAnimal from "./routes/add-animal/AddAnimal.component";
 import Milk from "./routes/milk/Milk.component";
 import AddMilk from "./routes/add-milk/AddMilk.component";
 import Health from "./routes/health/Health.component";
 import AddHealth from "./routes/add-health/AddHealth.component";
+import Worker from "./routes/workers/Worker.component";
+import AddWorker from "./routes/add-worker/AddWorker.component";
 
 import "./index.css";
 
@@ -60,6 +62,9 @@ const App = () => {
             <Route exact path="/health" element={<Health />}></Route>
             <Route exact path="/health/add" element={<AddHealth />}></Route>
             <Route exact path="/health/edit" element={<AddHealth />}></Route>
+            <Route exact path="/workers" element={<Worker />}></Route>
+            <Route exact path="/workers/add" element={<AddWorker />}></Route>
+            <Route exact path="/workers/edit" element={<AddWorker />}></Route>
           </Route>
           <Route element={<PublicRoutes />}>
             <Route exact path="/" element={<Homepage />}></Route>

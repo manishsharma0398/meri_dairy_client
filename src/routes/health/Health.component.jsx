@@ -22,6 +22,7 @@ const Health = () => {
 
   useEffect(() => {
     health();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const deleteHealthHandler = async (id) => {
