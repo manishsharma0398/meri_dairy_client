@@ -8,6 +8,7 @@ import {
   setHealthData,
   deleteHealthData,
 } from "../../store/health/health-action-creator";
+import { getAnimalNameById } from "../../utils/selectAnimal";
 
 const Health = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const Health = () => {
                   style={{ color: "red" }}
                 />
               </div>
-              <h2>Animal: {animal_id}</h2>
+              <h2>Animal: {getAnimalNameById(animal_id)}</h2>
               <h2>Type: {treatment_type}</h2>
               <h2>Medicine: {medicine}</h2>
             </div>

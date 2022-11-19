@@ -11,6 +11,8 @@ import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
+import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
+import Dropdown from "../../components/dropdown/Dropdown.component";
 
 const AddMating = () => {
   const navigate = useNavigate();
@@ -43,20 +45,42 @@ const AddMating = () => {
     if (page === "addMating") return;
     const mating = matingData.filter((m) => m.id === matingId)[0];
 
+    const {
+      a_id,
+      date,
+      bull_or_ai,
+      bull_or_semen_name,
+      bull_or_semen_id,
+      breed,
+      semen_brand,
+      cost,
+      success,
+    } = mating;
+
     setMatingFields({
       ...matingFields,
-      a_id: mating.a_id,
-      bull_or_ai: mating.bull_or_ai,
-      bull_or_semen_name: mating.bull_or_semen_name,
-      bull_or_semen_id: mating.bull_or_semen_id,
-      breed: mating.breed,
-      semen_brand: mating.semen_brand,
-      cost: mating.cost,
-      success: mating.success,
-      date: parseDate(mating.date),
+      a_id,
+      bull_or_ai,
+      date: parseDate(date),
+      bull_or_semen_name,
+      bull_or_semen_id,
+      breed,
+      semen_brand,
+      cost,
+      success,
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const bullOrAIOptions = [
+    { value: "bull", label: "Bull" },
+    { value: "ai", label: "Artificial Insemination" },
+  ];
+
+  const successOptions = [
+    { value: "true", label: "Success" },
+    { value: "false", label: "Failed" },
+  ];
 
   const onChangeHandler = (e) => {
     setMatingFields({
@@ -73,8 +97,6 @@ const AddMating = () => {
         ? await addMatingData(matingFields)
         : await updateMatingData(matingFields, matingId);
 
-    console.log(tr);
-
     const { error } = tr;
     if (error) return;
     navigate("/mating");
@@ -88,7 +110,7 @@ const AddMating = () => {
       <form className="auth-form" onSubmit={matingFormHandler}>
         {/* {error && <span className="err-msg">{errorMsg}</span>} */}
 
-        <InputForm
+        <AnimalDropdown
           id="a_id"
           label="Animal"
           name="a_id"
@@ -96,13 +118,18 @@ const AddMating = () => {
           onChangeHandler={onChangeHandler}
           placeholder="Animal"
         />
-        <InputForm
+        <Dropdown
           id="bull_or_ai"
           label="Bull Or AI"
           name="bull_or_ai"
           inputValue={bull_or_ai}
           onChangeHandler={onChangeHandler}
           placeholder="Bull Or AI"
+          children={bullOrAIOptions.map((b) => (
+            <option key={b.value} value={b.value}>
+              {b.label}
+            </option>
+          ))}
         />
         <InputForm
           id="bull_or_semen_name"
@@ -138,21 +165,25 @@ const AddMating = () => {
         />
         <InputForm
           id="cost"
-          label="Treatment Price"
+          label="Cost"
           name="cost"
           inputValue={cost}
           onChangeHandler={onChangeHandler}
-          placeholder="Treatment Price"
+          placeholder="Cost"
           type="number"
         />
-        <InputForm
+        <Dropdown
           id="success"
           label="Success"
           name="success"
           inputValue={success}
           onChangeHandler={onChangeHandler}
           placeholder="Success"
-          type="boolean"
+          children={successOptions.map((b) => (
+            <option key={b.value} value={b.value}>
+              {b.label}
+            </option>
+          ))}
         />
         <InputForm
           id="date"
@@ -165,7 +196,7 @@ const AddMating = () => {
         />
 
         <Button
-          text={`${page === "addMating" ? "Add" : "Update"} Treatment`}
+          text={`${page === "addMating" ? "Add" : "Update"} Mating`}
           type="submit"
         />
       </form>

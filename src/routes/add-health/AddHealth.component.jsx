@@ -10,6 +10,8 @@ import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
+import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
+import Dropdown from "../../components/dropdown/Dropdown.component";
 
 const AddHealth = () => {
   const navigate = useNavigate();
@@ -22,6 +24,10 @@ const AddHealth = () => {
     date: "",
   });
   const { animal_id, treatment_type, medicine, date } = healthFields;
+  const treatmentTypes = [
+    { value: "vaccine", label: "Vaccine" },
+    { value: "deworming", label: "Deworming" },
+  ];
 
   useEffect(() => {
     if (page === "addHealth") return;
@@ -64,21 +70,26 @@ const AddHealth = () => {
       <form className="auth-form" onSubmit={healthFormHandler}>
         {/* {error && <span className="err-msg">{errorMsg}</span>} */}
 
-        <InputForm
+        <AnimalDropdown
           id="animal_id"
           label="Animal"
           name="animal_id"
-          inputValue={animal_id}
+          placeholder="Select Animal"
           onChangeHandler={onChangeHandler}
-          placeholder="Animal"
+          inputValue={animal_id}
         />
-        <InputForm
+        <Dropdown
           id="treatment_type"
           label="Treatment type"
           name="treatment_type"
           inputValue={treatment_type}
           onChangeHandler={onChangeHandler}
           placeholder="Treatment type"
+          children={treatmentTypes.map((treat) => (
+            <option value={treat.value} key={treat.value}>
+              {treat.label}
+            </option>
+          ))}
         />
         <InputForm
           id="medicine"

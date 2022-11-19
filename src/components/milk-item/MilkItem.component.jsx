@@ -2,12 +2,13 @@ import moment from "moment";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 import {
   deleteMilkData,
   setMilkData,
 } from "../../store/milk/milk-action-creator";
-import { Link } from "react-router-dom";
+import { getAnimalNameById } from "../../utils/selectAnimal";
 
 const MilkItem = ({ milk }) => {
   const { milkData } = useSelector((state) => state.milk);
@@ -30,10 +31,10 @@ const MilkItem = ({ milk }) => {
 
   return (
     <tr>
-      <td>{a_id}</td>
+      <td>{getAnimalNameById(a_id)}</td>
       <td>{time}</td>
       <td>{moment(date).format("MMM Do YY")}</td>
-      <td>{quantity}</td>
+      <td>{quantity} L</td>
       <td>
         <div className="actions">
           <Link

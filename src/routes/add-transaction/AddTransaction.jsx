@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -11,6 +11,7 @@ import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
+import Dropdown from "../../components/dropdown/Dropdown.component";
 
 const AddTransaction = () => {
   const navigate = useNavigate();
@@ -62,6 +63,18 @@ const AddTransaction = () => {
     navigate("/transactions");
   };
 
+  const paymentModes = [
+    { value: "cash", label: "Cash" },
+    { value: "online", label: "Online" },
+    { value: "debt", label: "Debt" },
+    { value: "bank", label: "Bank" },
+  ];
+
+  const paymentTypes = [
+    { value: "expense", label: "Expense" },
+    { value: "income", label: "Income" },
+  ];
+
   return (
     <div className="auth">
       <h2 className="auth-title">
@@ -95,21 +108,32 @@ const AddTransaction = () => {
           placeholder="Amount"
           type="number"
         />
-        <InputForm
+        {/* ? type --- cash or online */}
+        <Dropdown
           id="mode"
           label="Payment Mode"
           name="mode"
           inputValue={mode}
           onChangeHandler={onChangeHandler}
           placeholder="Payment Mode"
+          children={paymentModes.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
+            </option>
+          ))}
         />
-        <InputForm
+        <Dropdown
           id="type"
           label="Type"
           name="type"
           inputValue={type}
           onChangeHandler={onChangeHandler}
           placeholder="Type"
+          children={paymentTypes.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
+            </option>
+          ))}
         />
         <InputForm
           id="date"

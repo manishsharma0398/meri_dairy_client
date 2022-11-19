@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { parseDate } from "../../utils/dateParser";
-
 import {
   addMilkData,
   updateMilkData,
 } from "../../store/milk/milk-action-creator";
 
+import Dropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
 
@@ -41,6 +41,7 @@ const AddMilk = () => {
 
   const onChangeHandler = (e) => {
     setMilkFields({ ...milkFields, [e.target.name]: e.target.value });
+    console.log(e.target.name, e.target.value);
   };
 
   const milkFormHandler = async (e) => {
@@ -64,13 +65,13 @@ const AddMilk = () => {
       <form className="auth-form" onSubmit={milkFormHandler}>
         {/* {error && <span className="err-msg">{errorMsg}</span>} */}
 
-        <InputForm
+        <Dropdown
           id="a_id"
           label="Animal"
           name="a_id"
-          inputValue={a_id}
+          placeholder="Select Animal"
           onChangeHandler={onChangeHandler}
-          placeholder="Animal"
+          inputValue={a_id}
         />
         <InputForm
           id="time"

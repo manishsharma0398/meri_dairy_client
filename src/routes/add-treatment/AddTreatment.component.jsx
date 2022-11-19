@@ -6,11 +6,11 @@ import {
   addTreatmentData,
   updateTreatmentData,
 } from "../../store/treatment/treatment-action-creator";
-
 import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
+import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 
 const AddTreatment = () => {
   const navigate = useNavigate();
@@ -93,7 +93,7 @@ const AddTreatment = () => {
       <form className="auth-form" onSubmit={treatmentFormHandler}>
         {/* {error && <span className="err-msg">{errorMsg}</span>} */}
 
-        <InputForm
+        <AnimalDropdown
           id="animal_id"
           label="Animal"
           name="animal_id"
