@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -9,7 +9,7 @@ import {
 } from "../../store/user/user-action-creator";
 
 import InputForm from "../../components/input-form/InputForm.component";
-import Button from "../../components/button/Button.component";
+import Form from "../../components/form/Form.component";
 
 import "../Auth.styles.scss";
 
@@ -45,35 +45,39 @@ const Login = () => {
   };
 
   return (
-    <div className="auth">
-      <h2 className="auth-title">Login</h2>
-      <form className="auth-form" onSubmit={loginFormHandler}>
-        {error && <span className="err-msg">{errorMsg}</span>}
-
-        <InputForm
-          id="emailOrPhone"
-          label="Email or Phone"
-          name="emailOrPhone"
-          inputValue={emailOrPhone}
-          onChangeHandler={onChangeHandler}
-          placeholder="Email or Phone No"
-        />
-        <InputForm
-          id="password"
-          label="Password"
-          name="password"
-          inputValue={password}
-          onChangeHandler={onChangeHandler}
-          placeholder="Password"
-          type="password"
-        />
-
-        <Button text="Login" type="submit" />
+    <Form
+      formHeading="Login"
+      error={error}
+      errorMsg={errorMsg}
+      onSubmitFormHandler={loginFormHandler}
+      btnText="Login"
+      children={
+        <Fragment>
+          <InputForm
+            id="emailOrPhone"
+            label="Email or Phone"
+            name="emailOrPhone"
+            inputValue={emailOrPhone}
+            onChangeHandler={onChangeHandler}
+            placeholder="Email or Phone No"
+          />
+          <InputForm
+            id="password"
+            label="Password"
+            name="password"
+            inputValue={password}
+            onChangeHandler={onChangeHandler}
+            placeholder="Password"
+            type="password"
+          />
+        </Fragment>
+      }
+      helper={
         <span className="auth-helper">
           <Link to="/register">Don't have an account ?</Link>
         </span>
-      </form>
-    </div>
+      }
+    />
   );
 };
 
