@@ -10,12 +10,14 @@ import {
 import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
-import Button from "../../components/button/Button.component";
 import Dropdown from "../../components/dropdown/Dropdown.component";
+import Form from "../../components/form/Form.component";
 
 const AddTransaction = () => {
   const navigate = useNavigate();
   const { transactions } = useSelector((state) => state.transaction);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const { page, transactId } = useLocation().state;
   const [transactionFields, setTransactionFields] = useState({
     title: "",
@@ -77,79 +79,80 @@ const AddTransaction = () => {
 
   return (
     <div className="auth">
-      <h2 className="auth-title">
-        {page === "addTransaction" ? "Add" : "Update"} Transaction
-      </h2>
-      <form className="auth-form" onSubmit={transactionFormHandler}>
-        {/* {error && <span className="err-msg">{errorMsg}</span>} */}
+      <Form
+        formHeading={`${
+          page === "addTransaction" ? "Add" : "Update"
+        } Transaction`}
+        onSubmitFormHandler={transactionFormHandler}
+        error={error}
+        errorMsg={errorMsg}
+        btnText={`${page === "addTransaction" ? "Add" : "Update"} Transaction`}
+        children={
+          <Fragment>
+            <InputForm
+              id="title"
+              label="Title"
+              name="title"
+              inputValue={title}
+              onChangeHandler={onChangeHandler}
+              placeholder="Title"
+            />
+            <InputForm
+              id="remarks"
+              label="Remarks"
+              name="remarks"
+              inputValue={remarks}
+              onChangeHandler={onChangeHandler}
+              placeholder="Remarks"
+            />
+            <InputForm
+              id="amount"
+              label="Amount"
+              name="amount"
+              inputValue={amount}
+              onChangeHandler={onChangeHandler}
+              placeholder="Amount"
+              type="number"
+            />
 
-        <InputForm
-          id="title"
-          label="Title"
-          name="title"
-          inputValue={title}
-          onChangeHandler={onChangeHandler}
-          placeholder="Title"
-        />
-        <InputForm
-          id="remarks"
-          label="Remarks"
-          name="remarks"
-          inputValue={remarks}
-          onChangeHandler={onChangeHandler}
-          placeholder="Remarks"
-        />
-        <InputForm
-          id="amount"
-          label="Amount"
-          name="amount"
-          inputValue={amount}
-          onChangeHandler={onChangeHandler}
-          placeholder="Amount"
-          type="number"
-        />
-        {/* ? type --- cash or online */}
-        <Dropdown
-          id="mode"
-          label="Payment Mode"
-          name="mode"
-          inputValue={mode}
-          onChangeHandler={onChangeHandler}
-          placeholder="Payment Mode"
-          children={paymentModes.map((p) => (
-            <option key={p.value} value={p.value}>
-              {p.label}
-            </option>
-          ))}
-        />
-        <Dropdown
-          id="type"
-          label="Type"
-          name="type"
-          inputValue={type}
-          onChangeHandler={onChangeHandler}
-          placeholder="Type"
-          children={paymentTypes.map((p) => (
-            <option key={p.value} value={p.value}>
-              {p.label}
-            </option>
-          ))}
-        />
-        <InputForm
-          id="date"
-          label="Date"
-          name="date"
-          inputValue={parseDate(date)}
-          onChangeHandler={onChangeHandler}
-          placeholder="Date"
-          type="date"
-        />
-
-        <Button
-          text={`${page === "addTransaction" ? "Add" : "Update"} Transaction`}
-          type="submit"
-        />
-      </form>
+            <Dropdown
+              id="mode"
+              label="Payment Mode"
+              name="mode"
+              inputValue={mode}
+              onChangeHandler={onChangeHandler}
+              placeholder="Payment Mode"
+              children={paymentModes.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            />
+            <Dropdown
+              id="type"
+              label="Type"
+              name="type"
+              inputValue={type}
+              onChangeHandler={onChangeHandler}
+              placeholder="Type"
+              children={paymentTypes.map((p) => (
+                <option key={p.value} value={p.value}>
+                  {p.label}
+                </option>
+              ))}
+            />
+            <InputForm
+              id="date"
+              label="Date"
+              name="date"
+              inputValue={parseDate(date)}
+              onChangeHandler={onChangeHandler}
+              placeholder="Date"
+              type="date"
+            />
+          </Fragment>
+        }
+      />
     </div>
   );
 };

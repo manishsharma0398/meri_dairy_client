@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -10,9 +10,11 @@ import {
 
 import Dropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 import InputForm from "../../components/input-form/InputForm.component";
-import Button from "../../components/button/Button.component";
+import Form from "../../components/form/Form.component";
 
 const AddMilk = () => {
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const { milkData } = useSelector((state) => state.milk);
   const navigate = useNavigate();
   const { page, milkId } = useLocation().state;
@@ -58,53 +60,50 @@ const AddMilk = () => {
   };
 
   return (
-    <div className="auth">
-      <h2 className="auth-title">
-        {page === "addMilk" ? "Add" : "Update"} Milk Record
-      </h2>
-      <form className="auth-form" onSubmit={milkFormHandler}>
-        {/* {error && <span className="err-msg">{errorMsg}</span>} */}
-
-        <Dropdown
-          id="a_id"
-          label="Animal"
-          name="a_id"
-          placeholder="Select Animal"
-          onChangeHandler={onChangeHandler}
-          inputValue={a_id}
-        />
-        <InputForm
-          id="time"
-          label="Time"
-          name="time"
-          inputValue={time}
-          onChangeHandler={onChangeHandler}
-          placeholder="Time"
-        />
-        <InputForm
-          id="date"
-          label="Date"
-          name="date"
-          inputValue={date}
-          onChangeHandler={onChangeHandler}
-          placeholder="Date"
-          type="date"
-        />
-        <InputForm
-          id="quantity"
-          label="Quantity"
-          name="quantity"
-          inputValue={quantity}
-          onChangeHandler={onChangeHandler}
-          placeholder="Quantity"
-        />
-
-        <Button
-          text={`${page === "addMilk" ? "Add" : "Update"} Milk Record`}
-          type="submit"
-        />
-      </form>
-    </div>
+    <Form
+      formHeading={`${page === "addMilk" ? "Add" : "Update"}  Milk Record`}
+      onSubmitFormHandler={milkFormHandler}
+      error={error}
+      errorMsg={errorMsg}
+      btnText={`${page === "addMilk" ? "Add" : "Update"} Milk Record`}
+      children={
+        <Fragment>
+          <Dropdown
+            id="a_id"
+            label="Animal"
+            name="a_id"
+            placeholder="Select Animal"
+            onChangeHandler={onChangeHandler}
+            inputValue={a_id}
+          />
+          <InputForm
+            id="time"
+            label="Time"
+            name="time"
+            inputValue={time}
+            onChangeHandler={onChangeHandler}
+            placeholder="Time"
+          />
+          <InputForm
+            id="date"
+            label="Date"
+            name="date"
+            inputValue={date}
+            onChangeHandler={onChangeHandler}
+            placeholder="Date"
+            type="date"
+          />
+          <InputForm
+            id="quantity"
+            label="Quantity"
+            name="quantity"
+            inputValue={quantity}
+            onChangeHandler={onChangeHandler}
+            placeholder="Quantity"
+          />
+        </Fragment>
+      }
+    />
   );
 };
 

@@ -23,7 +23,7 @@ const AnimalDropdown = ({
       children={allAnimals.map((d) => {
         const { id: animalId, identifier } = d;
         return (
-          <option value={animalId}>
+          <option key={animalId} value={animalId}>
             {animalId} {identifier}
           </option>
         );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -11,10 +11,13 @@ import { parseDate } from "../../utils/dateParser";
 import InputForm from "../../components/input-form/InputForm.component";
 import Button from "../../components/button/Button.component";
 import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
+import Form from "../../components/form/Form.component";
 
 const AddTreatment = () => {
   const navigate = useNavigate();
   const { treatmentData } = useSelector((state) => state.treatment);
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const { page, treatmentId } = useLocation().state;
   const [treatmentFields, setTreatmentFields] = useState({
     animal_id: "",
@@ -86,86 +89,83 @@ const AddTreatment = () => {
   };
 
   return (
-    <div className="auth">
-      <h2 className="auth-title">
-        {page === "addTreatment" ? "Add" : "Update"} Treatment
-      </h2>
-      <form className="auth-form" onSubmit={treatmentFormHandler}>
-        {/* {error && <span className="err-msg">{errorMsg}</span>} */}
-
-        <AnimalDropdown
-          id="animal_id"
-          label="Animal"
-          name="animal_id"
-          inputValue={animal_id}
-          onChangeHandler={onChangeHandler}
-          placeholder="Animal"
-        />
-        <InputForm
-          id="vet_name"
-          label="Vet Name"
-          name="vet_name"
-          inputValue={vet_name}
-          onChangeHandler={onChangeHandler}
-          placeholder="Vet Name"
-        />
-        <InputForm
-          id="medicine_with_quantity"
-          label="Medicine with Quantity"
-          name="medicine_with_quantity"
-          inputValue={medicine_with_quantity}
-          onChangeHandler={onChangeHandler}
-          placeholder="Medicine with Quantity"
-        />
-        <InputForm
-          id="disease"
-          label="Disease"
-          name="disease"
-          inputValue={disease}
-          onChangeHandler={onChangeHandler}
-          placeholder="Disease"
-        />
-        <InputForm
-          id="disease_remarks"
-          label="Disease Remarks"
-          name="disease_remarks"
-          inputValue={disease_remarks}
-          onChangeHandler={onChangeHandler}
-          placeholder="Disease Remarks"
-        />
-        <InputForm
-          id="treatment_remarks"
-          label="Treatment Remarks"
-          name="treatment_remarks"
-          inputValue={treatment_remarks}
-          onChangeHandler={onChangeHandler}
-          placeholder="Treatment Remarks"
-        />
-        <InputForm
-          id="cost"
-          label="Treatment Price"
-          name="cost"
-          inputValue={cost}
-          onChangeHandler={onChangeHandler}
-          placeholder="Treatment Price"
-          type="number"
-        />
-        <InputForm
-          id="date"
-          label="Date"
-          name="date"
-          inputValue={date}
-          onChangeHandler={onChangeHandler}
-          placeholder="Date"
-          type="date"
-        />
-
-        <Button
-          text={`${page === "addTreatment" ? "Add" : "Update"} Treatment`}
-          type="submit"
-        />
-      </form>
-    </div>
+    <Form
+      formHeading={`${page === "addTreatment" ? "Add" : "Update"} Treatment`}
+      onSubmitFormHandler={treatmentFormHandler}
+      error={error}
+      errorMsg={errorMsg}
+      btnText={`${page === "addTreatment" ? "Add" : "Update"} Treatment`}
+      children={
+        <Fragment>
+          <AnimalDropdown
+            id="animal_id"
+            label="Animal"
+            name="animal_id"
+            inputValue={animal_id}
+            onChangeHandler={onChangeHandler}
+            placeholder="Animal"
+          />
+          <InputForm
+            id="vet_name"
+            label="Vet Name"
+            name="vet_name"
+            inputValue={vet_name}
+            onChangeHandler={onChangeHandler}
+            placeholder="Vet Name"
+          />
+          <InputForm
+            id="medicine_with_quantity"
+            label="Medicine with Quantity"
+            name="medicine_with_quantity"
+            inputValue={medicine_with_quantity}
+            onChangeHandler={onChangeHandler}
+            placeholder="Medicine with Quantity"
+          />
+          <InputForm
+            id="disease"
+            label="Disease"
+            name="disease"
+            inputValue={disease}
+            onChangeHandler={onChangeHandler}
+            placeholder="Disease"
+          />
+          <InputForm
+            id="disease_remarks"
+            label="Disease Remarks"
+            name="disease_remarks"
+            inputValue={disease_remarks}
+            onChangeHandler={onChangeHandler}
+            placeholder="Disease Remarks"
+          />
+          <InputForm
+            id="treatment_remarks"
+            label="Treatment Remarks"
+            name="treatment_remarks"
+            inputValue={treatment_remarks}
+            onChangeHandler={onChangeHandler}
+            placeholder="Treatment Remarks"
+          />
+          <InputForm
+            id="cost"
+            label="Treatment Price"
+            name="cost"
+            inputValue={cost}
+            onChangeHandler={onChangeHandler}
+            placeholder="Treatment Price"
+            type="number"
+          />
+          <InputForm
+            id="date"
+            label="Date"
+            name="date"
+            inputValue={date}
+            onChangeHandler={onChangeHandler}
+            placeholder="Date"
+            type="date"
+          />
+        </Fragment>
+      }
+    />
   );
 };
 

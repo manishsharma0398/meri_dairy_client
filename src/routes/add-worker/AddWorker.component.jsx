@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -9,7 +9,7 @@ import {
   updateWorkerData,
 } from "../../store/worker/worker-action-creator";
 
-import Button from "../../components/button/Button.component";
+import Form from "../../components/form/Form.component";
 import InputForm from "../../components/input-form/InputForm.component";
 
 const AddWorker = () => {
@@ -26,6 +26,7 @@ const AddWorker = () => {
     remarks: "",
   });
   const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [image, setImage] = useState({ preview: "", raw: "" });
 
   const { name, email, address, date_joined, salary, remarks } = workerDetails;
@@ -94,100 +95,94 @@ const AddWorker = () => {
   };
 
   return (
-    <div className="auth">
-      <h2 className="auth-title">
-        {page === "addWorker" ? "Add Worker" : "Update Worker Data"}
-      </h2>
-      <form
-        className="auth-form"
-        onSubmit={
-          page === "addWorker" ? addNewWorkerHandler : updateWorkerHandler
-        }
-      >
-        {error && <span className="err-msg">{setError}</span>}
+    <Form
+      formHeading={`${page === "addWorker" ? "Add" : "Update"}  Worker`}
+      onSubmitFormHandler={
+        page === "addWorker" ? addNewWorkerHandler : updateWorkerHandler
+      }
+      error={error}
+      errorMsg={errorMsg}
+      btnText={`${page === "addWorker" ? "Add" : "Update"}  Worker`}
+      children={
+        <Fragment>
+          <InputForm
+            id="name"
+            label="Name"
+            name="name"
+            inputValue={name}
+            onChangeHandler={onChangeHandler}
+            placeholder="Worker Name"
+          />
+          <InputForm
+            id="email"
+            label="Email"
+            name="email"
+            inputValue={email}
+            onChangeHandler={onChangeHandler}
+            placeholder="Email"
+          />
 
-        <InputForm
-          id="name"
-          label="Name"
-          name="name"
-          inputValue={name}
-          onChangeHandler={onChangeHandler}
-          placeholder="Worker Name"
-        />
-        <InputForm
-          id="email"
-          label="Email"
-          name="email"
-          inputValue={email}
-          onChangeHandler={onChangeHandler}
-          placeholder="Email"
-        />
+          <InputForm
+            id="date_joined"
+            label="Date Joined"
+            name="date_joined"
+            inputValue={date_joined}
+            onChangeHandler={onChangeHandler}
+            placeholder="Date Joined"
+            type="date"
+          />
+          <InputForm
+            id="address"
+            label="Address"
+            name="address"
+            inputValue={address}
+            onChangeHandler={onChangeHandler}
+            placeholder="Address"
+          />
+          <InputForm
+            id="salary"
+            label="Salary"
+            name="salary"
+            inputValue={salary}
+            onChangeHandler={onChangeHandler}
+            placeholder="Salary"
+            type="number"
+          />
+          <InputForm
+            id="remarks"
+            label="Remarks"
+            name="remarks"
+            inputValue={remarks}
+            onChangeHandler={onChangeHandler}
+            placeholder="Remarks"
+          />
 
-        <InputForm
-          id="date_joined"
-          label="Date Joined"
-          name="date_joined"
-          inputValue={date_joined}
-          onChangeHandler={onChangeHandler}
-          placeholder="Date Joined"
-          type="date"
-        />
-        <InputForm
-          id="address"
-          label="Address"
-          name="address"
-          inputValue={address}
-          onChangeHandler={onChangeHandler}
-          placeholder="Address"
-        />
-        <InputForm
-          id="salary"
-          label="Salary"
-          name="salary"
-          inputValue={salary}
-          onChangeHandler={onChangeHandler}
-          placeholder="Salary"
-          type="number"
-        />
-        <InputForm
-          id="remarks"
-          label="Remarks"
-          name="remarks"
-          inputValue={remarks}
-          onChangeHandler={onChangeHandler}
-          placeholder="Remarks"
-        />
+          <div className="img-container">
+            <div className="img-preview">
+              {image.raw || image.preview ? (
+                <img width="100%" src={image.preview} alt="" />
+              ) : (
+                <h1>No Image Selected</h1>
+              )}
+            </div>
 
-        <div className="img-container">
-          <div className="img-preview">
-            {image.raw || image.preview ? (
-              <img width="100%" src={image.preview} alt="" />
-            ) : (
-              <h1>No Image Selected</h1>
-            )}
+            <div className="img-actions">
+              <button type="button" className="select">
+                <label htmlFor="imgFile">Select Image</label>
+                <input type="file" id="imgFile" onChange={onFileChange} />
+              </button>
+              <button
+                className="clear"
+                onClick={() => setImage({ preview: "", raw: "" })}
+                type="button"
+              >
+                Clear
+              </button>
+            </div>
           </div>
-
-          <div className="img-actions">
-            <button type="button" className="select">
-              <label htmlFor="imgFile">Select Image</label>
-              <input type="file" id="imgFile" onChange={onFileChange} />
-            </button>
-            <button
-              className="clear"
-              onClick={() => setImage({ preview: "", raw: "" })}
-              type="button"
-            >
-              Clear
-            </button>
-          </div>
-        </div>
-
-        <Button
-          text={page === "addWorker" ? "Add Worker" : "Update Worker Data"}
-          type="submit"
-        />
-      </form>
-    </div>
+        </Fragment>
+      }
+    />
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -9,12 +9,14 @@ import {
 import { parseDate } from "../../utils/dateParser";
 
 import InputForm from "../../components/input-form/InputForm.component";
-import Button from "../../components/button/Button.component";
 import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 import Dropdown from "../../components/dropdown/Dropdown.component";
+import Form from "../../components/form/Form.component";
 
 const AddHealth = () => {
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const { healthRecords } = useSelector((state) => state.health);
   const { page, healthId } = useLocation().state;
   const [healthFields, setHealthFields] = useState({
@@ -63,58 +65,55 @@ const AddHealth = () => {
   };
 
   return (
-    <div className="auth">
-      <h2 className="auth-title">
-        {page === "addHealth" ? "Add" : "Update"} Health Record
-      </h2>
-      <form className="auth-form" onSubmit={healthFormHandler}>
-        {/* {error && <span className="err-msg">{errorMsg}</span>} */}
-
-        <AnimalDropdown
-          id="animal_id"
-          label="Animal"
-          name="animal_id"
-          placeholder="Select Animal"
-          onChangeHandler={onChangeHandler}
-          inputValue={animal_id}
-        />
-        <Dropdown
-          id="treatment_type"
-          label="Treatment type"
-          name="treatment_type"
-          inputValue={treatment_type}
-          onChangeHandler={onChangeHandler}
-          placeholder="Treatment type"
-          children={treatmentTypes.map((treat) => (
-            <option value={treat.value} key={treat.value}>
-              {treat.label}
-            </option>
-          ))}
-        />
-        <InputForm
-          id="medicine"
-          label="Medicine"
-          name="medicine"
-          inputValue={medicine}
-          onChangeHandler={onChangeHandler}
-          placeholder="Medicine"
-        />
-        <InputForm
-          id="date"
-          label="Date"
-          name="date"
-          inputValue={date}
-          onChangeHandler={onChangeHandler}
-          placeholder="Date"
-          type="date"
-        />
-
-        <Button
-          text={`${page === "addHealth" ? "Add" : "Update"} Health Record`}
-          type="submit"
-        />
-      </form>
-    </div>
+    <Form
+      formHeading={`${page === "addHealth" ? "Add" : "Update"} Health Record`}
+      onSubmitFormHandler={healthFormHandler}
+      error={error}
+      errorMsg={errorMsg}
+      btnText={`${page === "addHealth" ? "Add" : "Update"} Health Record`}
+      children={
+        <Fragment>
+          <AnimalDropdown
+            id="animal_id"
+            label="Animal"
+            name="animal_id"
+            placeholder="Select Animal"
+            onChangeHandler={onChangeHandler}
+            inputValue={animal_id}
+          />
+          <Dropdown
+            id="treatment_type"
+            label="Treatment type"
+            name="treatment_type"
+            inputValue={treatment_type}
+            onChangeHandler={onChangeHandler}
+            placeholder="Treatment type"
+            children={treatmentTypes.map((treat) => (
+              <option value={treat.value} key={treat.value}>
+                {treat.label}
+              </option>
+            ))}
+          />
+          <InputForm
+            id="medicine"
+            label="Medicine"
+            name="medicine"
+            inputValue={medicine}
+            onChangeHandler={onChangeHandler}
+            placeholder="Medicine"
+          />
+          <InputForm
+            id="date"
+            label="Date"
+            name="date"
+            inputValue={date}
+            onChangeHandler={onChangeHandler}
+            placeholder="Date"
+            type="date"
+          />
+        </Fragment>
+      }
+    />
   );
 };
 
