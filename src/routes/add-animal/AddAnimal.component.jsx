@@ -1,22 +1,23 @@
 import React, { useState, useEffect, Fragment } from "react";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import { parseDate } from "../../utils/dateParser";
 
 import {
   addNewAnimal,
   updateAnimal,
 } from "../../store/animal/animal-action-creator";
+import { parseDate } from "../../utils/dateParser";
+import { uploadPhoto } from "../../utils/uploadImageHandler";
 
 import Form from "../../components/form/Form.component";
 import InputForm from "../../components/input-form/InputForm.component";
 import RadioInput from "../../components/radio-input/RadioInput.component";
+import ImageUploader from "../../components/image-uploader/ImageUploader.component";
 
 import "./AddAnimal.styles.scss";
 
 const AddAnimal = () => {
+  const [image, setImage] = useState({ preview: "", raw: "" });
   const { page, animalId } = useLocation().state;
   const navigate = useNavigate();
   const { allAnimals } = useSelector((state) => state.animals);
@@ -34,9 +35,59 @@ const AddAnimal = () => {
     bull_breed: "",
     dam_breed: "",
   });
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [image, setImage] = useState({ preview: "", raw: "" });
+
+  const fillUpdtAnimalFields = () => {
+    const animal = allAnimals.filter((a) => a.id === animalId)[0];
+    setImage({
+      preview: animal.photo_url,
+      raw: animal.photo_url,
+    });
+    const { id, user_id, date, ...animalDetails } = animal;
+    setAnimalFields({ ...animalDetails, date: parseDate(animal.date) });
+  };
+
+  useEffect(() => {
+    if (page === "editAnimal") fillUpdtAnimalFields();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onChangeHandler = (e) => {
+    setAnimalFields({ ...animalFields, [e.target.name]: e.target.value });
+  };
+
+  const addNewAnimalHandler = async () => {
+    const { error } = await addNewAnimal(animalFields);
+    if (error) return;
+    return navigate("/animals");
+  };
+
+  const updateAnimalHandler = async () => {
+    const { error } = await updateAnimal(animalFields, animalId);
+    if (error) return;
+    return navigate("/animals");
+  };
+
+  const onFileChange = async (e) => {
+    if (e.target.files.length) {
+      setImage({
+        preview: URL.createObjectURL(e.target.files[0]),
+        raw: e.target.files[0],
+      });
+    }
+  };
+
+  const onSelectImgClear = () => {
+    setImage({ preview: "", raw: "" });
+  };
+
+  const handleSubmitForm = async (e) => {
+    e.preventDefault();
+    // const { error, data } = await uploadPhoto(image);
+    const { data } = await uploadPhoto(image);
+    animalFields.photo_url = data;
+    if (page === "addAnimal") return addNewAnimalHandler();
+    return updateAnimalHandler();
+  };
 
   const {
     identifier,
@@ -51,81 +102,13 @@ const AddAnimal = () => {
     animal_status,
     gender,
   } = animalFields;
-
-  const fillUpdtAnimalFields = () => {
-    const d = allAnimals.filter((a) => a.id === animalId)[0];
-    if (d.photo_url.length > 0) {
-      setImage({
-        preview: d.photo_url,
-        raw: d.photo_url,
-      });
-    }
-    setAnimalFields({ ...d, date: parseDate(d.date) });
-  };
-
-  useEffect(() => {
-    if (page === "editAnimal") fillUpdtAnimalFields();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onChangeHandler = (e) => {
-    e.preventDefault();
-    setAnimalFields({ ...animalFields, [e.target.name]: e.target.value });
-  };
-
-  const onFileChange = async (e) => {
-    if (e.target.files.length) {
-      setImage({
-        preview: URL.createObjectURL(e.target.files[0]),
-        raw: e.target.files[0],
-      });
-    }
-  };
-
-  const uploadPhoto = async () => {
-    if (!image.raw && !image.preview) {
-      console.log("photo not selected");
-      return { error: false, data: "" };
-    }
-    try {
-      const formData = new FormData();
-      formData.append("photo_url", image.raw);
-      const res = await axios.post("/file", formData);
-      return { error: false, data: res.data.data };
-    } catch (err) {
-      return { error: true, data: "" };
-    }
-  };
-
-  const addNewAnimalHandler = async (e) => {
-    e.preventDefault();
-    const { error, data } = await uploadPhoto();
-    if (error) return;
-    animalFields.photo_url = data;
-    const animalAdded = await addNewAnimal(animalFields);
-    const err = animalAdded.error;
-    if (err) return;
-    return navigate("/animals");
-  };
-
-  const updateAnimalHandler = async (e) => {
-    e.preventDefault();
-    const { id, user_id, ...restFields } = animalFields;
-    console.log(restFields);
-    const { error } = await updateAnimal(restFields, id);
-    if (error) return;
-    navigate("/animals");
-  };
+  const { preview, raw } = image;
 
   return (
     <Form
       formHeading={page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
-      onSubmitFormHandler={
-        page === "addAnimal" ? addNewAnimalHandler : updateAnimalHandler
-      }
+      onSubmitFormHandler={handleSubmitForm}
       btnText={page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
-      error={error}
-      errorMsg={errorMsg}
       children={
         <Fragment>
           <label className="label">Animal</label>
@@ -153,7 +136,6 @@ const AddAnimal = () => {
             onChangeHandler={onChangeHandler}
             checked={animal_type === "buffalo"}
           />
-
           <InputForm
             id="identifier"
             label="Identifier"
@@ -187,7 +169,6 @@ const AddAnimal = () => {
             onChangeHandler={onChangeHandler}
             checked={gender === "female"}
           />
-
           <label className="label">Animal Status</label>
           <RadioInput
             id="purchased"
@@ -205,7 +186,6 @@ const AddAnimal = () => {
             onChangeHandler={onChangeHandler}
             checked={animal_status === "born_on_farm"}
           />
-
           <InputForm
             id="date"
             label="Date"
@@ -255,30 +235,12 @@ const AddAnimal = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Dam Breed"
           />
-
-          <div className="img-container">
-            <div className="img-preview">
-              {image.raw || image.preview ? (
-                <img width="100%" src={image.preview} alt="" />
-              ) : (
-                <h1>No Image Selected</h1>
-              )}
-            </div>
-
-            <div className="img-actions">
-              <button type="button" className="select">
-                <label htmlFor="imgFile">Select Image</label>
-                <input type="file" id="imgFile" onChange={onFileChange} />
-              </button>
-              <button
-                className="clear"
-                onClick={() => setImage({ preview: "", raw: "" })}
-                type="button"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
+          <ImageUploader
+            previewImage={preview}
+            rawImage={raw}
+            onFileChange={onFileChange}
+            onSelectImgClear={onSelectImgClear}
+          />
         </Fragment>
       }
     />

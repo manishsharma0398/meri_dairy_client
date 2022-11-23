@@ -1,25 +1,24 @@
-import React, { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   setCurrentUser,
   loginUser,
   setCurrentUserError,
 } from "../../store/user/user-action-creator";
+import { inputError } from "../../utils/getError";
+import { setFormErrors } from "../../store/ui/ui-action-creator";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Form from "../../components/form/Form.component";
-
-import "../Auth.styles.scss";
+import AuthHelper from "../../components/auth-helper/AuthHelper.component";
 
 const Login = () => {
   const [loginFormFields, setLoginFormFields] = useState({
     emailOrPhone: "",
     password: "",
   });
-
-  const { error, errorMsg } = useSelector((state) => state.user);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,11 +43,14 @@ const Login = () => {
     return navigate("/animals");
   };
 
+  useEffect(() => {
+    dispatch(setFormErrors([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Form
       formHeading="Login"
-      error={error}
-      errorMsg={errorMsg}
       onSubmitFormHandler={loginFormHandler}
       btnText="Login"
       children={
@@ -60,6 +62,8 @@ const Login = () => {
             inputValue={emailOrPhone}
             onChangeHandler={onChangeHandler}
             placeholder="Email or Phone No"
+            inputErr={inputError("emailOrPhone")}
+            // required={true}
           />
           <InputForm
             id="password"
@@ -69,13 +73,17 @@ const Login = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Password"
             type="password"
+            inputErr={inputError("password")}
+            // required={true}
           />
         </Fragment>
       }
       helper={
-        <span className="auth-helper">
-          <Link to="/register">Don't have an account ?</Link>
-        </span>
+        <AuthHelper
+          helperText="Don't have an account?"
+          link="/register"
+          linkText="Register"
+        />
       }
     />
   );

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import {
   setCurrentUser,
@@ -26,45 +27,72 @@ const Navigation = () => {
     }
   };
 
+  const toggleLinks = () => {
+    const cl = "mob-links";
+    const a = document.querySelector(".nav-links").classList;
+    if (a.contains(cl)) return a.remove(cl);
+    a.add(cl);
+  };
+
   return (
-    <nav className="navigation">
+    <nav className="navigation container">
       <div className="logo-container">
         <Link className="logo" to={currentUser ? "/animals" : "/"}>
           Dairy
         </Link>
+
+        <GiHamburgerMenu onClick={toggleLinks} className="ham" />
       </div>
       {!currentUser && (
-        <ul className="nav-links">
+        <ul className="nav-links public-links">
           <li className="nav-links-item">
-            <Link to="/login">Login</Link>
+            <Link onClick={toggleLinks} to="/login">
+              Login
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/register">Register</Link>
+            <Link onClick={toggleLinks} to="/register">
+              Register
+            </Link>
           </li>
         </ul>
       )}
       {currentUser && (
-        <ul className="nav-links">
+        <ul className="nav-links private-links">
           <li className="nav-links-item">
-            <Link to="/animals">Animals</Link>
+            <Link onClick={toggleLinks} to="/animals">
+              Animals
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/milk">Milk</Link>
+            <Link onClick={toggleLinks} to="/milk">
+              Milk
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/health">Health</Link>
+            <Link onClick={toggleLinks} to="/health">
+              Health
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/workers">Workers</Link>
+            <Link onClick={toggleLinks} to="/workers">
+              Workers
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/transactions">Transactions</Link>
+            <Link onClick={toggleLinks} to="/transactions">
+              Transactions
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/treatment">Treatment</Link>
+            <Link onClick={toggleLinks} to="/treatment">
+              Treatment
+            </Link>
           </li>
           <li className="nav-links-item">
-            <Link to="/mating">Mating</Link>
+            <Link onClick={toggleLinks} to="/mating">
+              Mating
+            </Link>
           </li>
           <li className="nav-links-item">
             <Link onClick={logOutHandler} to="#">

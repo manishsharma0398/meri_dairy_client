@@ -1,15 +1,14 @@
-import React, { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { registerUser } from "../../store/user/user-action-creator";
+import { setFormErrors } from "../../store/ui/ui-action-creator";
+import { inputError } from "../../utils/getError";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Form from "../../components/form/Form.component";
-import {
-  registerUser,
-  setCurrentUserError,
-} from "../../store/user/user-action-creator";
-
-import "../Auth.styles.scss";
+import AuthHelper from "../../components/auth-helper/AuthHelper.component";
 
 const Register = () => {
   const [registrationFormFields, setRegistrationFormFields] = useState({
@@ -34,7 +33,6 @@ const Register = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { error, errorMsg } = useSelector((state) => state.user);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -43,22 +41,21 @@ const Register = () => {
 
   const registerFormHandler = async (e) => {
     e.preventDefault();
-
-    const userData = await registerUser(registrationFormFields);
-
-    const { data, error } = userData;
-
-    if (error) return dispatch(setCurrentUserError({ error, errorMsg: data }));
-
-    return navigate("/login");
+    dispatch(setFormErrors([]));
+    const { error, data } = await registerUser(registrationFormFields);
+    if (!error) return navigate("/login");
+    return dispatch(setFormErrors(data));
   };
+
+  useEffect(() => {
+    dispatch(setFormErrors([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Form
       formHeading="Register"
       onSubmitFormHandler={registerFormHandler}
-      error={error}
-      errorMsg={errorMsg}
       btnText="Register"
       children={
         <Fragment>
@@ -69,6 +66,8 @@ const Register = () => {
             inputValue={full_name}
             onChangeHandler={onChangeHandler}
             placeholder="Full Name"
+            inputErr={inputError("full_name")}
+            // required={true}
           />
           <InputForm
             id="reg_password"
@@ -78,6 +77,8 @@ const Register = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Password"
             type="password"
+            inputErr={inputError("password")}
+            // required={true}
           />
           <InputForm
             id="conf_password"
@@ -87,6 +88,8 @@ const Register = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Password"
             type="password"
+            inputErr={inputError("confirmPassword")}
+            // required={true}
           />
           <InputForm
             id="email"
@@ -95,6 +98,7 @@ const Register = () => {
             inputValue={email}
             onChangeHandler={onChangeHandler}
             placeholder="xyz@xyz.com"
+            inputErr={inputError("email")}
             type="email"
           />
           <InputForm
@@ -104,6 +108,7 @@ const Register = () => {
             inputValue={phone}
             onChangeHandler={onChangeHandler}
             placeholder="123456789"
+            inputErr={inputError("phone")}
             type="phone"
           />
           <InputForm
@@ -113,6 +118,8 @@ const Register = () => {
             inputValue={farm_name}
             onChangeHandler={onChangeHandler}
             placeholder="Ex - Manish Farm"
+            inputErr={inputError("farm_name")}
+            // required={true}
           />
           <InputForm
             id="farm_address"
@@ -121,13 +128,17 @@ const Register = () => {
             inputValue={farm_address}
             onChangeHandler={onChangeHandler}
             placeholder="Ex - Milan More, Siliguri"
+            inputErr={inputError("farm_address")}
+            // required={true}
           />
         </Fragment>
       }
       helper={
-        <span className="auth-helper">
-          <Link to="/login">Already have an account ?</Link>
-        </span>
+        <AuthHelper
+          helperText="Already have an account?"
+          link="/login"
+          linkText="Login"
+        />
       }
     />
   );

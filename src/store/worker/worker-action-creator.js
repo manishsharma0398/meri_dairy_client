@@ -17,6 +17,7 @@ export const addWorkerData = async (workerDetails) => {
 };
 
 export const updateWorkerData = async (workerDetails, workerId) => {
+  console.log(workerDetails);
   try {
     const res = await axios.put(`/worker/${workerId}`, workerDetails);
     console.log(res);

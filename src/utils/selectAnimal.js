@@ -1,8 +1,7 @@
 import { store } from "../store/store";
 
-const { allAnimals } = store.getState().animals;
-
 export const getAnimalNameById = (animalId) => {
+  const { allAnimals } = store.getState().animals;
   return allAnimals
     ? allAnimals.find((animal) => animal.id === animalId).identifier
     : "";

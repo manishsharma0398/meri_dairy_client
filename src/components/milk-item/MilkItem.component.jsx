@@ -31,16 +31,13 @@ const MilkItem = ({ milk }) => {
 
   return (
     <tr>
-      <td>{getAnimalNameById(a_id)}</td>
+      <td>{`${getAnimalNameById(a_id)}`}</td>
       <td>{time}</td>
       <td>{moment(date).format("MMM Do YY")}</td>
       <td>{quantity} L</td>
       <td>
         <div className="actions">
-          <Link
-            state={{ page: "editMilk", milkId: id }}
-            to={`/milk/edit/${id}`}
-          >
+          <Link state={{ page: "editMilk", milkId: id }} to="/milk/edit">
             <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
           </Link>
           <FiTrash2

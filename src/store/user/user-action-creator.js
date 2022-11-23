@@ -43,7 +43,7 @@ export const registerUser = async (registrationData) => {
     const userData = await axios.post("/auth/register", registrationData);
     return { ...userData.data, error: false };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 

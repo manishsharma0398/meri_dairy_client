@@ -50,7 +50,7 @@ const App = () => {
   return (
     <Fragment>
       <Navigation />
-      <div className="container">
+      <div className="container body">
         <Routes>
           <Route element={<PrivateRoutes />}>
             <Route exact path="/animals" element={<Dashboard />}></Route>
@@ -59,11 +59,7 @@ const App = () => {
             <Route exact path="/animals/:animalId" element={<Animal />}></Route>
             <Route exact path="/milk" element={<Milk />}></Route>
             <Route exact path="/milk/add" element={<AddMilk />}></Route>
-            <Route
-              exact
-              path="/milk/edit/:milkId"
-              element={<AddMilk />}
-            ></Route>
+            <Route exact path="/milk/edit" element={<AddMilk />}></Route>
             <Route exact path="/health" element={<Health />}></Route>
             <Route exact path="/health/add" element={<AddHealth />}></Route>
             <Route exact path="/health/edit" element={<AddHealth />}></Route>

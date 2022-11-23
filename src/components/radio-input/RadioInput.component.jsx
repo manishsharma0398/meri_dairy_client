@@ -22,13 +22,8 @@ const RadioInput = ({
           value={inputValue}
           onChange={onChangeHandler}
           checked={checked}
-          onClick={() => console.log("input click")}
         />
-        <label
-          onClick={() => console.log("label click")}
-          className="radio-label"
-          htmlFor={id}
-        >
+        <label className="radio-label" htmlFor={id}>
           {label}
         </label>
       </div>

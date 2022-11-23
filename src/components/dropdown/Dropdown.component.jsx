@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 const Dropdown = ({
   label,
@@ -10,15 +10,17 @@ const Dropdown = ({
   children,
 }) => {
   return (
-    <Fragment>
+    <div className="form-group">
       <label className="label" htmlFor={id}>
         {label}
       </label>
       <select value={inputValue} onChange={onChangeHandler} name={name} id={id}>
-        <option value="#">{placeholder}</option>
+        <option className="default-option" value="#">
+          {placeholder}
+        </option>
         {children}
       </select>
-    </Fragment>
+    </div>
   );
 };
 

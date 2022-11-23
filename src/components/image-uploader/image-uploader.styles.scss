@@ -1,0 +1,71 @@
+.img-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  .img-preview {
+    border: 2px solid gray;
+    height: 240px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    h1 {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .img-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+
+    #imgFile {
+      display: none;
+    }
+
+    button {
+      flex: 1;
+      padding: 7px 0;
+      font-size: 16px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 500;
+      border: 1px solid transparent;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .select {
+      background: teal;
+      color: white;
+
+      label:hover {
+        cursor: pointer;
+      }
+
+      &:hover {
+        background: rgb(4, 75, 75);
+        border: 1px solid gray;
+      }
+    }
+
+    .clear {
+      background: orangered;
+      color: white;
+
+      &:hover {
+        background: rgb(151, 45, 7);
+      }
+    }
+  }
+}

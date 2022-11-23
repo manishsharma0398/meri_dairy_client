@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,14 +7,13 @@ import {
   addWorkerData,
   updateWorkerData,
 } from "../../store/worker/worker-action-creator";
+import { uploadPhoto } from "../../utils/uploadImageHandler";
 
 import Form from "../../components/form/Form.component";
 import InputForm from "../../components/input-form/InputForm.component";
+import ImageUploader from "../../components/image-uploader/ImageUploader.component";
 
 const AddWorker = () => {
-  const { page, workerId } = useLocation().state;
-  const navigate = useNavigate();
-  const { workers } = useSelector((state) => state.worker);
   const [workerDetails, setWorkerDetails] = useState({
     name: "",
     email: "",
@@ -25,31 +23,40 @@ const AddWorker = () => {
     salary: "",
     remarks: "",
   });
-  const [error, setError] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const [image, setImage] = useState({ preview: "", raw: "" });
-
-  const { name, email, address, date_joined, salary, remarks } = workerDetails;
-
-  const fillWorkersFields = () => {
-    const d = workers.filter((a) => a.id === workerId)[0];
-    if (d.profile_pic.length > 0) {
-      setImage({
-        preview: d.profile_pic,
-        raw: d.profile_pic,
-      });
-    }
-    setWorkerDetails({ ...d, date_joined: parseDate(d.date_joined) });
-  };
+  const { page, workerId } = useLocation().state;
+  const navigate = useNavigate();
+  const { workers } = useSelector((state) => state.worker);
 
   useEffect(() => {
     if (page === "editWorker") fillWorkersFields();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fillWorkersFields = () => {
+    const worker = workers.filter((a) => a.id === workerId)[0];
+    setImage({
+      preview: worker.profile_pic,
+      raw: worker.profile_pic,
+    });
+    const { id, user_id, date_joined, ...workerDetails } = worker;
+    setWorkerDetails({ ...workerDetails, date_joined: parseDate(date_joined) });
+  };
+
   const onChangeHandler = (e) => {
-    e.preventDefault();
     setWorkerDetails({ ...workerDetails, [e.target.name]: e.target.value });
+  };
+
+  const addNewWorkerHandler = async () => {
+    const { error } = await addWorkerData(workerDetails);
+    if (error) return;
+    return navigate("/workers");
+  };
+
+  const updateWorkerHandler = async () => {
+    const { error } = await updateWorkerData(workerDetails, workerId);
+    if (error) return;
+    return navigate("/workers");
   };
 
   const onFileChange = async (e) => {
@@ -61,47 +68,26 @@ const AddWorker = () => {
     }
   };
 
-  const uploadPhoto = async () => {
-    if (!image.raw && !image.preview) {
-      console.log("photo not selected");
-      return { error: false, data: "" };
-    }
-    try {
-      const formData = new FormData();
-      formData.append("photo_url", image.raw);
-      const res = await axios.post("/file", formData);
-      return { error: false, data: res.data.data };
-    } catch (err) {
-      console.log(err);
-      return { error: true, data: "" };
-    }
+  const onSelectImgClear = () => {
+    setImage({ preview: "", raw: "" });
   };
 
-  const addNewWorkerHandler = async (e) => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
-    const { error, data } = await uploadPhoto();
-    if (error) return;
+    // const { error, data } = await uploadPhoto(image);
+    const { data } = await uploadPhoto(image);
     workerDetails.profile_pic = data;
-    const { error: err } = await addWorkerData(workerDetails);
-    if (err) return;
-    return navigate("/workers");
+    if (page === "addWorker") return addNewWorkerHandler();
+    return updateWorkerHandler();
   };
 
-  const updateWorkerHandler = async (e) => {
-    e.preventDefault();
-    const { error } = await updateWorkerData(workerDetails, workerId);
-    if (error) return;
-    return navigate("/workers");
-  };
+  const { name, email, address, date_joined, salary, remarks } = workerDetails;
+  const { preview, raw } = image;
 
   return (
     <Form
       formHeading={`${page === "addWorker" ? "Add" : "Update"}  Worker`}
-      onSubmitFormHandler={
-        page === "addWorker" ? addNewWorkerHandler : updateWorkerHandler
-      }
-      error={error}
-      errorMsg={errorMsg}
+      onSubmitFormHandler={handleSubmitForm}
       btnText={`${page === "addWorker" ? "Add" : "Update"}  Worker`}
       children={
         <Fragment>
@@ -121,7 +107,6 @@ const AddWorker = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Email"
           />
-
           <InputForm
             id="date_joined"
             label="Date Joined"
@@ -156,30 +141,12 @@ const AddWorker = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Remarks"
           />
-
-          <div className="img-container">
-            <div className="img-preview">
-              {image.raw || image.preview ? (
-                <img width="100%" src={image.preview} alt="" />
-              ) : (
-                <h1>No Image Selected</h1>
-              )}
-            </div>
-
-            <div className="img-actions">
-              <button type="button" className="select">
-                <label htmlFor="imgFile">Select Image</label>
-                <input type="file" id="imgFile" onChange={onFileChange} />
-              </button>
-              <button
-                className="clear"
-                onClick={() => setImage({ preview: "", raw: "" })}
-                type="button"
-              >
-                Clear
-              </button>
-            </div>
-          </div>
+          <ImageUploader
+            previewImage={preview}
+            rawImage={raw}
+            onFileChange={onFileChange}
+            onSelectImgClear={onSelectImgClear}
+          />
         </Fragment>
       }
     />

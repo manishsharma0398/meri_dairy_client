@@ -1,0 +1,21 @@
+.form {
+  width: 400px;
+  padding: 30px 20px;
+  border-radius: 10px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  &-title {
+    font-size: 30px;
+    margin-bottom: 4px;
+  }
+
+  .err-msg {
+    color: red;
+  }
+}
+
+.label {
+  font-size: 22px;
+  font-weight: 500;
+}
