@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -34,7 +34,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="s">
+    <Fragment>
       {showDeleteDialogBox && <DialogBox />}
       {!allAnimals && !err && <h2>Loading...</h2>}
       {allAnimals && allAnimals.length === 0 && (
@@ -61,7 +61,7 @@ const Dashboard = () => {
         allAnimals.map((animal) => (
           <DashboardItem key={animal.id} animal={animal} />
         ))}
-    </div>
+    </Fragment>
   );
 };
 

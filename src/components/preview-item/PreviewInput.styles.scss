@@ -1,0 +1,84 @@
+.preview {
+  position: relative;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  width: 300px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .more-options {
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    padding: 5px;
+    border-radius: 45%;
+    cursor: pointer;
+    border: none;
+
+    .more {
+      font-size: 20px;
+    }
+  }
+
+  .bg-dark {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    border-radius: 30%;
+    background-color: rgba(0, 0, 0, 0.2);
+    right: -50px;
+    top: -40px;
+  }
+
+  .opt-box {
+    position: absolute;
+    background: white;
+    top: 25px;
+    right: 40px;
+    overflow: hidden;
+
+    &-container {
+      &-options {
+        list-style: none;
+        padding: 5px 30px 5px 15px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: white;
+        cursor: pointer;
+        // width: 100px;
+        font-size: 20px;
+        width: 100%;
+        border: none;
+        font-family: "Hind Siliguri", sans-serif;
+
+        &:nth-child(1) {
+          background: teal;
+        }
+        &:nth-child(2) {
+          background: #db162f;
+        }
+
+        .icon {
+          padding-top: 6px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+
+  &-link {
+    padding-left: 10px;
+    :hover {
+      text-decoration: underline;
+    }
+  }
+}

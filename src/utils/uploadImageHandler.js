@@ -2,13 +2,10 @@ import axios from "axios";
 
 export const uploadPhoto = async (image) => {
   const imageNotSelected = !image.raw && !image.preview;
-  console.log(image);
 
   const { raw, preview } = image;
 
   if (imageNotSelected) return { error: false, data: "" };
-
-  console.log("image selected");
 
   if (typeof raw === "string") return { error: false, data: preview };
 

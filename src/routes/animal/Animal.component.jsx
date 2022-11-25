@@ -7,6 +7,7 @@ import moment from "moment";
 import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 import { parseDate } from "../../utils/dateParser";
 import { deleteAnimal } from "../../store/animal/animal-action-creator";
+import { placeholderImg } from "../../utils/placeholderImage";
 
 import "./Animal.styles.scss";
 
@@ -37,11 +38,6 @@ const Animal = () => {
       (a) => a.id.toString() === animalId.toString()
     );
     setAnimalDetails(animal[0]);
-
-    const thisAnimalMilkRecords = milkData.filter(
-      (a) => a.a_id.toString() === animalId.toString()
-    );
-    setMilkRecords(thisAnimalMilkRecords);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -91,7 +87,11 @@ const Animal = () => {
             />
           </div>
         </div>
-        <img width="250px" src={photo_url} alt="" />
+        <img
+          width="250px"
+          src={photo_url ? photo_url : placeholderImg(animal_type)}
+          alt=""
+        />
         <h2>Animal: {capitalizeFirstLetter(animal_type)}</h2>
         <h2>Gender: {capitalizeFirstLetter(gender)}</h2>
         <h2>

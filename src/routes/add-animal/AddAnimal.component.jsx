@@ -17,10 +17,6 @@ import ImageUploader from "../../components/image-uploader/ImageUploader.compone
 import "./AddAnimal.styles.scss";
 
 const AddAnimal = () => {
-  const [image, setImage] = useState({ preview: "", raw: "" });
-  const { page, animalId } = useLocation().state;
-  const navigate = useNavigate();
-  const { allAnimals } = useSelector((state) => state.animals);
   const [animalFields, setAnimalFields] = useState({
     identifier: "",
     breed: "",
@@ -35,6 +31,10 @@ const AddAnimal = () => {
     bull_breed: "",
     dam_breed: "",
   });
+  const [image, setImage] = useState({ preview: "", raw: "" });
+  const { page, animalId } = useLocation().state;
+  const navigate = useNavigate();
+  const { allAnimals } = useSelector((state) => state.animals);
 
   const fillUpdtAnimalFields = () => {
     const animal = allAnimals.filter((a) => a.id === animalId)[0];

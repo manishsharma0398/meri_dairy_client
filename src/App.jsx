@@ -21,8 +21,9 @@ import Milk from "./routes/milk/Milk.component";
 import AddMilk from "./routes/add-milk/AddMilk.component";
 import Health from "./routes/health/Health.component";
 import AddHealth from "./routes/add-health/AddHealth.component";
-import Worker from "./routes/workers/Worker.component";
+import Worker from "./routes/workers/Workers.component";
 import AddWorker from "./routes/add-worker/AddWorker.component";
+import WorkerItem from "./components/worker-item/WorkerItem.component";
 import Transaction from "./routes/transaction/Transaction.component";
 import AddTransaction from "./routes/add-transaction/AddTransaction";
 import Treatment from "./routes/treatment/Treatment.component";
@@ -50,54 +51,69 @@ const App = () => {
   return (
     <Fragment>
       <Navigation />
-      <div className="container body">
-        <Routes>
-          <Route element={<PrivateRoutes />}>
-            <Route exact path="/animals" element={<Dashboard />}></Route>
-            <Route exact path="/animals/add" element={<AddAnimal />}></Route>
-            <Route exact path="/animals/edit" element={<AddAnimal />}></Route>
-            <Route exact path="/animals/:animalId" element={<Animal />}></Route>
-            <Route exact path="/milk" element={<Milk />}></Route>
-            <Route exact path="/milk/add" element={<AddMilk />}></Route>
-            <Route exact path="/milk/edit" element={<AddMilk />}></Route>
-            <Route exact path="/health" element={<Health />}></Route>
-            <Route exact path="/health/add" element={<AddHealth />}></Route>
-            <Route exact path="/health/edit" element={<AddHealth />}></Route>
-            <Route exact path="/workers" element={<Worker />}></Route>
-            <Route exact path="/workers/add" element={<AddWorker />}></Route>
-            <Route exact path="/workers/edit" element={<AddWorker />}></Route>
-            <Route exact path="/transactions" element={<Transaction />}></Route>
-            <Route
-              exact
-              path="/transactions/add"
-              element={<AddTransaction />}
-            ></Route>
-            <Route
-              exact
-              path="/transactions/edit"
-              element={<AddTransaction />}
-            ></Route>
-            <Route exact path="/treatment" element={<Treatment />}></Route>
-            <Route
-              exact
-              path="/treatment/add"
-              element={<AddTreatment />}
-            ></Route>
-            <Route
-              exact
-              path="/treatment/edit"
-              element={<AddTreatment />}
-            ></Route>
-            <Route exact path="/mating" element={<Mating />}></Route>
-            <Route exact path="/mating/add" element={<AddMating />}></Route>
-            <Route exact path="/mating/edit" element={<AddMating />}></Route>
-          </Route>
-          <Route element={<PublicRoutes />}>
-            <Route exact path="/" element={<Homepage />}></Route>
-            <Route exact path="/login" element={<Login />}></Route>
-            <Route exact path="/register" element={<Register />}></Route>
-          </Route>
-        </Routes>
+      <div className="body">
+        <div className="container">
+          <Routes>
+            <Route element={<PrivateRoutes />}>
+              <Route exact path="/animals" element={<Dashboard />}></Route>
+              <Route exact path="/animals/add" element={<AddAnimal />}></Route>
+              <Route exact path="/animals/edit" element={<AddAnimal />}></Route>
+              <Route
+                exact
+                path="/animals/:animalId"
+                element={<Animal />}
+              ></Route>
+              <Route exact path="/milk" element={<Milk />}></Route>
+              <Route exact path="/milk/add" element={<AddMilk />}></Route>
+              <Route exact path="/milk/edit" element={<AddMilk />}></Route>
+              <Route exact path="/health" element={<Health />}></Route>
+              <Route exact path="/health/add" element={<AddHealth />}></Route>
+              <Route exact path="/health/edit" element={<AddHealth />}></Route>
+              <Route exact path="/workers" element={<Worker />}></Route>
+              <Route exact path="/workers/add" element={<AddWorker />}></Route>
+              <Route exact path="/workers/edit" element={<AddWorker />}></Route>
+              <Route
+                exact
+                path="/workers/:workerId"
+                element={<WorkerItem />}
+              ></Route>
+              <Route
+                exact
+                path="/transactions"
+                element={<Transaction />}
+              ></Route>
+              <Route
+                exact
+                path="/transactions/add"
+                element={<AddTransaction />}
+              ></Route>
+              <Route
+                exact
+                path="/transactions/edit"
+                element={<AddTransaction />}
+              ></Route>
+              <Route exact path="/treatment" element={<Treatment />}></Route>
+              <Route
+                exact
+                path="/treatment/add"
+                element={<AddTreatment />}
+              ></Route>
+              <Route
+                exact
+                path="/treatment/edit"
+                element={<AddTreatment />}
+              ></Route>
+              <Route exact path="/mating" element={<Mating />}></Route>
+              <Route exact path="/mating/add" element={<AddMating />}></Route>
+              <Route exact path="/mating/edit" element={<AddMating />}></Route>
+            </Route>
+            <Route element={<PublicRoutes />}>
+              <Route exact path="/" element={<Homepage />}></Route>
+              <Route exact path="/login" element={<Login />}></Route>
+              <Route exact path="/register" element={<Register />}></Route>
+            </Route>
+          </Routes>
+        </div>
       </div>
     </Fragment>
   );

@@ -35,72 +35,74 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="navigation container">
-      <div className="logo-container">
-        <Link className="logo" to={currentUser ? "/animals" : "/"}>
-          Dairy
-        </Link>
+    <nav className="navigation">
+      <div className="container">
+        <div className="logo-container">
+          <Link className="logo" to={currentUser ? "/animals" : "/"}>
+            Dairy
+          </Link>
 
-        <GiHamburgerMenu onClick={toggleLinks} className="ham" />
+          <GiHamburgerMenu onClick={toggleLinks} className="ham" />
+        </div>
+        {!currentUser && (
+          <ul className="nav-links public-links">
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/login">
+                Login
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/register">
+                Register
+              </Link>
+            </li>
+          </ul>
+        )}
+        {currentUser && (
+          <ul className="nav-links private-links">
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/animals">
+                Animals
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/milk">
+                Milk
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/health">
+                Health
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/workers">
+                Workers
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/transactions">
+                Transactions
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/treatment">
+                Treatment
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={toggleLinks} to="/mating">
+                Mating
+              </Link>
+            </li>
+            <li className="nav-links-item">
+              <Link onClick={logOutHandler} to="#">
+                Log out
+              </Link>
+            </li>
+          </ul>
+        )}
       </div>
-      {!currentUser && (
-        <ul className="nav-links public-links">
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/login">
-              Login
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/register">
-              Register
-            </Link>
-          </li>
-        </ul>
-      )}
-      {currentUser && (
-        <ul className="nav-links private-links">
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/animals">
-              Animals
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/milk">
-              Milk
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/health">
-              Health
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/workers">
-              Workers
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/transactions">
-              Transactions
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/treatment">
-              Treatment
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={toggleLinks} to="/mating">
-              Mating
-            </Link>
-          </li>
-          <li className="nav-links-item">
-            <Link onClick={logOutHandler} to="#">
-              Log out
-            </Link>
-          </li>
-        </ul>
-      )}
     </nav>
   );
 };

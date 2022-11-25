@@ -33,8 +33,12 @@ const AddWorker = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const fillWorkersFields = () => {
+  const fillWorkersFields = async () => {
+    console.log(workers);
+    console.log(workerId);
+    console.log(typeof workerId);
     const worker = workers.filter((a) => a.id === workerId)[0];
+    console.log(worker);
     setImage({
       preview: worker.profile_pic,
       raw: worker.profile_pic,

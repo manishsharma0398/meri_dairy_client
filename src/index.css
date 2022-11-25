@@ -32,7 +32,8 @@ a {
 
 .body {
   /* ?Keep margin top and bottom 50 */
-  margin: 116px 0 50px 0;
+  margin: 116px 0 50px 0 !important;
+  /* margin-top: 116px !important; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -42,10 +43,6 @@ a {
 /* .body margin-top if mob-links */
 .mob-links.body {
   margin-top: 372px !important;
-}
-
-.container {
-  padding: 0 30px;
 }
 
 /* .home-btns {
@@ -72,4 +69,24 @@ th {
 td {
   text-align: center;
   border: 2px solid black;
+}
+
+.container {
+  padding: 0 30px;
+  margin: 0px auto;
+}
+
+@media only screen and (max-width: 640px) {
+  .container {
+    padding: 0 30px;
+  }
+}
+
+@media (min-width: 640.1px) and (max-width: 1007px) {
+}
+
+@media only screen and (min-width: 1007.1px) {
+  .container {
+    max-width: 1000px;
+  }
 }
