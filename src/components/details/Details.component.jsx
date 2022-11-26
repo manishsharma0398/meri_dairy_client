@@ -11,6 +11,7 @@ const Details = ({
   editLinkState,
   deleteFunction,
   details,
+  moreDetails,
 }) => {
   return (
     <div className="details-container">
@@ -26,7 +27,11 @@ const Details = ({
               </span>{" "}
               Edit
             </Link>
-            <button onClick={deleteFunction} className="delete-action">
+            <button
+              id="modal-delete-handler"
+              onClick={deleteFunction}
+              className="delete-action"
+            >
               <span className="icon">
                 <FiTrash2 className="delete" />
               </span>
@@ -36,9 +41,12 @@ const Details = ({
           <div className="profile-details">{details}</div>
         </div>
       </div>
-      <div className="more-details">
-        <h2>Other Details</h2>
-      </div>
+      {moreDetails && (
+        <div className="more-details">
+          <h2>Other Details</h2>
+          {moreDetails}
+        </div>
+      )}
     </div>
   );
 };

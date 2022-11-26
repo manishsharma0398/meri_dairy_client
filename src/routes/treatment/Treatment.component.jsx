@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import moment from "moment";
 
 import {
-  getTreatmentData,
   setTreatmentData,
   deleteTreatmentData,
 } from "../../store/treatment/treatment-action-creator";
@@ -14,16 +13,11 @@ const Treatment = () => {
   const dispatch = useDispatch();
   const { treatmentData } = useSelector((state) => state.treatment);
 
-  const getTreatment = async () => {
-    const { error, data } = await getTreatmentData();
-    if (error) return;
-    dispatch(setTreatmentData(data));
-  };
-
-  useEffect(() => {
-    getTreatment();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const getTreatment = async () => {
+  //   const { error, data } = await getTreatmentData();
+  //   if (error) return;
+  //   dispatch(setTreatmentData(data));
+  // };
 
   const deleteTreatmentHandler = async (id) => {
     console.log("delete treatment handler");
@@ -47,14 +41,14 @@ const Treatment = () => {
         treatmentData.map((treat) => {
           const {
             id,
-            animal_id,
             date,
-            vet_name,
-            medicine_with_quantity,
-            disease,
-            disease_remarks,
-            treatment_remarks,
-            cost,
+            // animal_id,
+            // vet_name,
+            // medicine_with_quantity,
+            // disease,
+            // disease_remarks,
+            // treatment_remarks,
+            // cost,
           } = treat;
           return (
             <div

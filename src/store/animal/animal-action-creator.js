@@ -1,5 +1,13 @@
 import axios from "axios";
+import { createSelector } from "reselect";
+
 import { SET_ANIMAL_DETAILS } from "./animal-action-types";
+
+const selectAnimalsReducer = (state) => state.animals;
+export const selectAllAnimals = createSelector(
+  [selectAnimalsReducer],
+  (animals) => animals.allAnimals
+);
 
 export const setAnimalDetails = (animalDetails) => ({
   type: SET_ANIMAL_DETAILS,
@@ -42,6 +50,7 @@ export const deleteAnimal = async (animalId) => {
   }
 };
 
-export const removeAnimalFromAllAnimals = (animals, animalId) => {
+export const removeAnimalFromAllAnimals = async (animals, animalId) => {
+  // console.log(selectAllAnimals);
   return animals.filter((animal) => animal.id !== animalId);
 };

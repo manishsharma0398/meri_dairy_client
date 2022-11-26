@@ -76,6 +76,13 @@ td {
   margin: 0px auto;
 }
 
+.content {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 @media only screen and (max-width: 640px) {
   .container {
     padding: 0 30px;

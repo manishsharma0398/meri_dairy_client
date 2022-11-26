@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
 import moment from "moment";
 
 import {
-  getMatingData,
   setMatingData,
   deleteMatingData,
 } from "../../store/mating/mating-action-creator";
@@ -14,16 +13,11 @@ const Mating = () => {
   const dispatch = useDispatch();
   const { matingData } = useSelector((state) => state.mating);
 
-  const fetchMatingData = async () => {
-    const { error, data } = await getMatingData();
-    if (error) return;
-    dispatch(setMatingData(data));
-  };
-
-  useEffect(() => {
-    fetchMatingData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const fetchMatingData = async () => {
+  //   const { error, data } = await getMatingData();
+  //   if (error) return;
+  //   dispatch(setMatingData(data));
+  // };
 
   const deleteMatingHandler = async (id) => {
     console.log("delete mating handler");
@@ -47,15 +41,15 @@ const Mating = () => {
         matingData.map((mate) => {
           const {
             id,
-            a_id,
             date,
-            bull_or_ai,
-            bull_or_semen_name,
-            bull_or_semen_id,
-            breed,
-            semen_brand,
-            cost,
-            success,
+            // a_id,
+            // bull_or_ai,
+            // bull_or_semen_name,
+            // bull_or_semen_id,
+            // breed,
+            // semen_brand,
+            // cost,
+            // success,
           } = mate;
           return (
             <div

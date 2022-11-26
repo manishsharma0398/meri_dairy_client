@@ -8,7 +8,10 @@ import {
   setCurrentUserError,
 } from "../../store/user/user-action-creator";
 import { inputError } from "../../utils/getError";
-import { setFormErrors } from "../../store/ui/ui-action-creator";
+import {
+  setFormErrors,
+  setSpinnerHandler,
+} from "../../store/ui/ui-action-creator";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Form from "../../components/form/Form.component";
@@ -31,6 +34,8 @@ const Login = () => {
 
   const loginFormHandler = async (e) => {
     e.preventDefault();
+
+    dispatch(setSpinnerHandler(true));
 
     dispatch(setCurrentUserError({ error: false, errorMsg: "" }));
 

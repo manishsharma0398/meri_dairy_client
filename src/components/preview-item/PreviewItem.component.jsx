@@ -2,18 +2,33 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GrMoreVertical } from "react-icons/gr";
 import { FiEdit3, FiTrash2 } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+
+import {
+  setDeleteDialogBoxDisplay,
+  setDeleteDialogBoxData,
+} from "../../store/ui/ui-action-creator";
 
 import "./PreviewInput.styles.scss";
 
 const PreviewItem = ({
+  id,
   image,
   name,
   detailsLink,
-  deleteFunction,
+  tableToDeleteFrom,
   editLink,
   editLinkState,
 }) => {
   const [displayOptBox, setDisplayOptBox] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const deleteHandler = () => {
+    dispatch(setDeleteDialogBoxData({ table: tableToDeleteFrom, id }));
+    dispatch(setDeleteDialogBoxDisplay(true));
+    setDisplayOptBox(!displayOptBox);
+  };
 
   const toggleDisplayOptBox = (e) => {
     setDisplayOptBox(!displayOptBox);
@@ -39,10 +54,7 @@ const PreviewItem = ({
             </span>{" "}
             Edit
           </Link>
-          <button
-            onClick={deleteFunction}
-            className="opt-box-container-options"
-          >
+          <button onClick={deleteHandler} className="opt-box-container-options">
             <span className="icon">
               <FiTrash2 className="delete" />
             </span>

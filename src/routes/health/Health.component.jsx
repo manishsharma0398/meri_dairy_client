@@ -1,78 +1,62 @@
-import React, { useEffect } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { FiEdit3, FiTrash2 } from "react-icons/fi";
+import { useSelector } from "react-redux";
 
-import {
-  getHealthData,
-  setHealthData,
-  deleteHealthData,
-} from "../../store/health/health-action-creator";
-import { getAnimalNameById } from "../../utils/selectAnimal";
+import { getHealthData } from "../../store/health/health-action-creator";
+
+import DialogBox from "../../components/dialog-box/DialogBox.component";
+import HealthItem from "../../components/health-item/HealthItem.component";
 
 const Health = () => {
-  const dispatch = useDispatch();
   const { healthRecords } = useSelector((state) => state.health);
-
-  const health = async () => {
-    const { error, data } = await getHealthData();
-    if (error) return;
-    dispatch(setHealthData(data));
-  };
-
-  useEffect(() => {
-    health();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const deleteHealthHandler = async (id) => {
-    const { error } = await deleteHealthData(id);
-    if (error) return;
-    const updMilkRecords = healthRecords.filter((m) => m.id !== id);
-    dispatch(setHealthData(updMilkRecords));
-  };
+  const { deleteDialogBox } = useSelector((state) => state.UI);
 
   return (
-    <div>
-      <Link
-        state={{ page: "addHealth", healthId: null }}
-        className="btn btn-link"
-        to="/health/add"
-      >
-        Add New Health
-      </Link>
+    <div className="content">
+      <Fragment>
+        {deleteDialogBox && <DialogBox />}
+        {!healthRecords && <h2>Loading...</h2>}
+        {healthRecords && healthRecords.length === 0 && (
+          <h2>No Records. Please add</h2>
+        )}
+        {/* {!err && ( */}
+        <Link
+          state={{ page: "addHealth", healthId: null }}
+          className="btn btn-link"
+          to="/health/add"
+        >
+          Add New Health
+        </Link>
+        {/* )} */}
+        {/* {err && ( */}
+        {!healthRecords && (
+          <div>
+            <h2 className="err-msg">Something went wrong. Please try again</h2>
+            <Link onClick={getHealthData} className="btn btn-link">
+              Refresh Page
+            </Link>
+          </div>
+        )}
+      </Fragment>
 
-      {healthRecords &&
-        healthRecords.map((health) => {
-          const { id, animal_id, treatment_type, medicine } = health;
-          return (
-            <div
-              style={{
-                border: "1px solid gray",
-                marginBottom: "10px",
-                padding: "10px",
-              }}
-              key={id}
-            >
-              <div className="actions">
-                <Link
-                  state={{ page: "editHealth", healthId: id }}
-                  to={`/health/edit`}
-                >
-                  <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
-                </Link>
-                <FiTrash2
-                  onClick={() => deleteHealthHandler(id)}
-                  className="act"
-                  style={{ color: "red" }}
-                />
-              </div>
-              <h2>Animal: {getAnimalNameById(animal_id)}</h2>
-              <h2>Type: {treatment_type}</h2>
-              <h2>Medicine: {medicine}</h2>
-            </div>
-          );
-        })}
+      {healthRecords && healthRecords.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Animal Name</th>
+              <th>Type</th>
+              <th>Medicine</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {healthRecords.map((health) => (
+              <HealthItem key={health.id} health={health} />
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import MilkItem from "../../components/milk-item/MilkItem.component";
-
 import { getMilkData, setMilkData } from "../../store/milk/milk-action-creator";
+
+import MilkItem from "../../components/milk-item/MilkItem.component";
+import Spinner from "../../components/spinner/Spinner.component";
 
 const Milk = () => {
   const dispatch = useDispatch();
@@ -18,11 +19,6 @@ const Milk = () => {
     setErr(null);
     dispatch(setMilkData(data));
   };
-
-  useEffect(() => {
-    getAllMilkRecords();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="s">

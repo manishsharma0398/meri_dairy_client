@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   getUserDataOnRefresh,
@@ -30,14 +30,27 @@ import Treatment from "./routes/treatment/Treatment.component";
 import AddTreatment from "./routes/add-treatment/AddTreatment.component";
 import Mating from "./routes/mating/Mating.component";
 import AddMating from "./routes/add-mating/AddMating.component";
+import Spinner from "./components/spinner/Spinner.component";
 
 import "./index.css";
+import { setSpinnerHandler } from "./store/ui/ui-action-creator";
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { showFullBodySpinner, deleteDialogBox } = useSelector(
+    (state) => state.UI
+  );
 
   useEffect(() => {
+    console.log("asdf checking for dialog box state");
+    deleteDialogBox && (document.body.style.overflow = "hidden");
+    !deleteDialogBox && (document.body.style.overflow = "auto");
+    // document.body.style.overflow = deleteDialogBox ?  : "auto";
+  }, [deleteDialogBox]);
+
+  useEffect(() => {
+    dispatch(setSpinnerHandler(true));
     const getData = async () => {
       const userLoggedIn = await getUserDataOnRefresh();
       if (!userLoggedIn) return navigate("/login");
@@ -50,7 +63,8 @@ const App = () => {
 
   return (
     <Fragment>
-      <Navigation />
+      {!showFullBodySpinner && <Navigation />}
+      {showFullBodySpinner && <Spinner />}
       <div className="body">
         <div className="container">
           <Routes>

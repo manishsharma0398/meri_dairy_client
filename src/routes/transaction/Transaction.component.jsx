@@ -1,82 +1,70 @@
-import React, { useEffect } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { FiEdit3, FiTrash2 } from "react-icons/fi";
-import moment from "moment";
+import { useSelector } from "react-redux";
 
-import {
-  getTransactionData,
-  setTransactionData,
-  deleteTransaction,
-} from "../../store/transaction/transaction-action-creator";
+import { getTransactionData } from "../../store/transaction/transaction-action-creator";
+
+import DialogBox from "../../components/dialog-box/DialogBox.component";
+import TransactionItem from "../../components/transaction-item/TransactionItem.component";
 
 const Transaction = () => {
-  const dispatch = useDispatch();
   const { transactions } = useSelector((state) => state.transaction);
-
-  const getTransactions = async () => {
-    const { error, data } = await getTransactionData();
-    if (error) return;
-    dispatch(setTransactionData(data));
-  };
-
-  useEffect(() => {
-    getTransactions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const deleteTransactionHandler = async (id) => {
-    const { error } = await deleteTransaction(id);
-    if (error) return;
-    const updTransactRecords = transactions.filter((m) => m.id !== id);
-    dispatch(setTransactionData(updTransactRecords));
-  };
+  const { deleteDialogBox } = useSelector((state) => state.UI);
 
   return (
     <div>
-      <Link
-        state={{ page: "addTransaction", transactId: null }}
-        className="btn btn-link"
-        to="/transactions/add"
-      >
-        Add Transaction
-      </Link>
-
-      {transactions &&
-        transactions.map((trans) => {
-          const { id, title, remarks, amount, mode, date, type } = trans;
-          return (
-            <div
-              style={{
-                border: "1px solid gray",
-                marginBottom: "10px",
-                padding: "10px",
-              }}
-              key={id}
-            >
-              <div className="actions">
-                <Link
-                  state={{ page: "editTransaction", transactId: id }}
-                  to={`/transactions/edit`}
-                >
-                  <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
-                </Link>
-                <FiTrash2
-                  onClick={() => deleteTransactionHandler(id)}
-                  className="act"
-                  style={{ color: "red" }}
-                />
-              </div>
-              <h2>
-                {title} - ₹ {amount}
+      <div className="content">
+        <Fragment>
+          {deleteDialogBox && <DialogBox />}
+          {!transactions && <h2>Loading...</h2>}
+          {transactions && transactions.length === 0 && (
+            <h2>No Records. Please add</h2>
+          )}
+          {/* {!err && ( */}
+          <Link
+            state={{ page: "addTransaction", transactId: null }}
+            className="btn btn-link"
+            to="/transactions/add"
+          >
+            Add Transaction
+          </Link>
+          {/* )} */}
+          {/* {err && ( */}
+          {!transactions && (
+            <div>
+              <h2 className="err-msg">
+                Something went wrong. Please try again
               </h2>
-              <h2>Date: {moment(date).format("dddd Do MMMM YYYY")}</h2>
-              <h2>Type: {type}</h2>
-              <h2>Mode: {mode}</h2>
-              <h2>Remarks: {remarks}</h2>
+              <Link onClick={getTransactionData} className="btn btn-link">
+                Refresh Page
+              </Link>
             </div>
-          );
-        })}
+          )}
+        </Fragment>
+
+        {transactions && transactions.length > 0 && (
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Amount</th>
+                <th>Mode</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactions.map((transaction) => (
+                <TransactionItem
+                  key={transaction.id}
+                  transaction={transaction}
+                />
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

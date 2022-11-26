@@ -1,33 +1,20 @@
-import React, { useEffect } from "react";
+import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-
-import {
-  getWorkerData,
-  setWorkerData,
-} from "../../store/worker/worker-action-creator";
+import { useSelector } from "react-redux";
 
 import Worker from "../../components/worker/Worker.component";
 
-import "./Workers.styles.scss";
-
 const Workers = () => {
-  const dispatch = useDispatch();
   const { workers } = useSelector((state) => state.worker);
 
-  const getWorkers = async () => {
-    const { error, data } = await getWorkerData();
-    if (error) return;
-    dispatch(setWorkerData(data));
-  };
-
-  useEffect(() => {
-    getWorkers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const getWorkers = async () => {
+  //   const { error, data } = await getWorkerData();
+  //   if (error) return;
+  //   dispatch(setWorkerData(data));
+  // };
 
   return (
-    <div>
+    <Fragment>
       <Link
         state={{ page: "addWorker", workerId: null }}
         className="btn btn-link"
@@ -37,13 +24,13 @@ const Workers = () => {
       </Link>
 
       {workers && (
-        <div className="workers">
+        <div className="content">
           {workers.map((worker) => (
             <Worker key={worker.id} worker={worker} />
           ))}
         </div>
       )}
-    </div>
+    </Fragment>
   );
 };
 
