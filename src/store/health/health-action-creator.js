@@ -11,7 +11,7 @@ export const addHealthData = async (healthDetails) => {
     await axios.post("/health/add", healthDetails);
     return { error: false, message: "Health Added" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -20,7 +20,7 @@ export const updateHealthData = async (healthDetails, healthId) => {
     await axios.put(`/health/${healthId}`, healthDetails);
     return { error: false, message: "Health Record Updated Successfully" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -29,7 +29,7 @@ export const getHealthData = async () => {
     const res = await axios.get("/health/all");
     return { error: false, data: res.data };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -38,6 +38,6 @@ export const deleteHealthData = async (id) => {
     await axios.delete(`/health/${id}`);
     return { error: false, message: "Health Deleted Successfully" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };

@@ -23,17 +23,20 @@ import Health from "./routes/health/Health.component";
 import AddHealth from "./routes/add-health/AddHealth.component";
 import Worker from "./routes/workers/Workers.component";
 import AddWorker from "./routes/add-worker/AddWorker.component";
-import WorkerItem from "./components/worker-item/WorkerItem.component";
+import WorkerItem from "./routes/worker-item/WorkerItem.component";
 import Transaction from "./routes/transaction/Transaction.component";
 import AddTransaction from "./routes/add-transaction/AddTransaction";
 import Treatment from "./routes/treatment/Treatment.component";
 import AddTreatment from "./routes/add-treatment/AddTreatment.component";
 import Mating from "./routes/mating/Mating.component";
 import AddMating from "./routes/add-mating/AddMating.component";
+import MatingDetails from "./routes/mating-details/MatingDetails.component";
 import Spinner from "./components/spinner/Spinner.component";
 
 import "./index.css";
 import { setSpinnerHandler } from "./store/ui/ui-action-creator";
+import { auth } from "./utils/firebase-details";
+import { useLayoutEffect } from "react";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,6 +46,7 @@ const App = () => {
   );
 
   useEffect(() => {
+    console.log(auth.currentUser);
     console.log("asdf checking for dialog box state");
     deleteDialogBox && (document.body.style.overflow = "hidden");
     !deleteDialogBox && (document.body.style.overflow = "auto");
@@ -50,7 +54,7 @@ const App = () => {
   }, [deleteDialogBox]);
 
   useEffect(() => {
-    dispatch(setSpinnerHandler(true));
+    // dispatch(setSpinnerHandler(true));
     const getData = async () => {
       const userLoggedIn = await getUserDataOnRefresh();
       if (!userLoggedIn) return navigate("/login");
@@ -64,10 +68,14 @@ const App = () => {
   return (
     <Fragment>
       {!showFullBodySpinner && <Navigation />}
-      {showFullBodySpinner && <Spinner />}
       <div className="body">
         <div className="container">
           <Routes>
+            <Route element={<PublicRoutes />}>
+              <Route exact path="/" element={<Homepage />}></Route>
+              <Route exact path="/login" element={<Login />}></Route>
+              <Route exact path="/register" element={<Register />}></Route>
+            </Route>
             <Route element={<PrivateRoutes />}>
               <Route exact path="/animals" element={<Dashboard />}></Route>
               <Route exact path="/animals/add" element={<AddAnimal />}></Route>
@@ -120,11 +128,11 @@ const App = () => {
               <Route exact path="/mating" element={<Mating />}></Route>
               <Route exact path="/mating/add" element={<AddMating />}></Route>
               <Route exact path="/mating/edit" element={<AddMating />}></Route>
-            </Route>
-            <Route element={<PublicRoutes />}>
-              <Route exact path="/" element={<Homepage />}></Route>
-              <Route exact path="/login" element={<Login />}></Route>
-              <Route exact path="/register" element={<Register />}></Route>
+              <Route
+                exact
+                path="/mating/:matingId"
+                element={<MatingDetails />}
+              ></Route>
             </Route>
           </Routes>
         </div>

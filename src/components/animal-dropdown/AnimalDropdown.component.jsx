@@ -10,6 +10,8 @@ const AnimalDropdown = ({
   name,
   onChangeHandler,
   inputValue,
+  dropdownError,
+  required,
 }) => {
   const { allAnimals } = useSelector((state) => state.animals);
   return (
@@ -20,6 +22,8 @@ const AnimalDropdown = ({
       placeholder={placeholder}
       onChangeHandler={onChangeHandler}
       inputValue={inputValue}
+      dropdownError={dropdownError}
+      required={required}
       children={allAnimals.map((d) => {
         const { id: animalId, identifier } = d;
         return (

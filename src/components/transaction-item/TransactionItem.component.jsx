@@ -10,7 +10,7 @@ import { capitalizeFirstLetter } from "../../utils/capitalizeFirstLetter";
 
 import TableActions from "../table-actions/TableActions.component";
 
-const TransactionItem = ({ transaction }) => {
+const TransactionItem = ({ transaction, slNo }) => {
   const { id, title, amount, mode, date, type } = transaction;
 
   const { transactions } = useSelector((state) => state.transaction);
@@ -25,6 +25,7 @@ const TransactionItem = ({ transaction }) => {
 
   return (
     <tr>
+      <td>{slNo}</td>
       <td>{moment(date).format("DD-MM-YYYY")}</td>
       <td>{capitalizeFirstLetter(title)}</td>
       <td>₹ {amount}</td>

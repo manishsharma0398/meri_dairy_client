@@ -11,15 +11,19 @@ const FormComponent = ({
   children,
   btnText,
   helper,
+  secondaryBtns,
 }) => {
   return (
-    <div className="form">
-      <h2 className="form-title">{formHeading}</h2>
-      <form className="form-body" onSubmit={onSubmitFormHandler}>
-        {children}
-        <Button text={btnText} type="submit" />
-        {helper}
-      </form>
+    <div className="content">
+      <div className="form">
+        <h2 className="form-title">{formHeading}</h2>
+        <form className="form-body" onSubmit={onSubmitFormHandler}>
+          {children}
+          <Button text={btnText} type="submit" />
+          {helper}
+        </form>
+        {secondaryBtns && secondaryBtns}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.btn-link {
+  display: block;
+  width: max-content;
+  position: relative;
+  padding: 8px 10px 8px 35px;
+  align-self: flex-start;
+
+  span {
+    position: absolute;
+    left: 2px;
+    bottom: -3px;
+    font-size: 32px;
+  }
+}

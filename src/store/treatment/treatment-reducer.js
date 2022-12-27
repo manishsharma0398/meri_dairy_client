@@ -1,7 +1,11 @@
-import { SET_TREATMENT_DATA } from "./treatment-action-types";
+import {
+  SET_TREATMENT_DATA,
+  SET_TREATMENT_ERROR,
+} from "./treatment-action-types";
 
 const INITIAL_STATE = {
   treatmentData: null,
+  treatmentError: null,
 };
 
 export const treatmentReducer = (state = INITIAL_STATE, action) => {
@@ -10,6 +14,9 @@ export const treatmentReducer = (state = INITIAL_STATE, action) => {
   switch (type) {
     case SET_TREATMENT_DATA:
       return { ...state, treatmentData: payload };
+
+    case SET_TREATMENT_ERROR:
+      return { ...state, treatmentError: payload };
 
     default:
       return state;

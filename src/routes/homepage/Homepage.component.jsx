@@ -1,22 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+
+import AddLink from "../../components/add-link/AddLink.component";
+
+import "./Homepage.styles.scss";
 
 const Homepage = () => {
   return (
-    <div>
+    <div className="home-page">
       <h3>Welcome to Dairy Farm Management System</h3>
       <div className="home-btns">
-        <Link style={{ display: "inline-block" }} className="btn" to="/login">
-          Login
-        </Link>
-
-        <Link
-          style={{ display: "inline-block" }}
-          className="btn"
-          to="/register"
-        >
-          Register
-        </Link>
+        <AddLink addLink="/login" linkText="Login" />
+        <AddLink addLink="/register" linkText="Regiser" />
       </div>
     </div>
   );

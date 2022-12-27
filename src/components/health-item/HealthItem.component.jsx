@@ -11,7 +11,7 @@ import { getAnimalNameById } from "../../utils/selectAnimal";
 
 import TableActions from "../table-actions/TableActions.component";
 
-const HealthItem = ({ health }) => {
+const HealthItem = ({ health, slNo }) => {
   const { id, animal_id, treatment_type, date, medicine } = health;
 
   const { healthRecords } = useSelector((state) => state.health);
@@ -26,6 +26,7 @@ const HealthItem = ({ health }) => {
 
   return (
     <tr>
+      <td>{slNo}</td>
       <td>{moment(date).format("DD-MM-YYYY")}</td>
       <td>{getAnimalNameById(animal_id)}</td>
       <td>{capitalizeFirstLetter(treatment_type)}</td>

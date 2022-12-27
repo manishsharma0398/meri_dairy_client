@@ -43,16 +43,17 @@ const Health = () => {
         <table>
           <thead>
             <tr>
+              <th>Sl. No</th>
               <th>Date</th>
-              <th>Animal Name</th>
+              <th>Animal</th>
               <th>Type</th>
               <th>Medicine</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {healthRecords.map((health) => (
-              <HealthItem key={health.id} health={health} />
+            {healthRecords.map((health, i) => (
+              <HealthItem key={health.id} health={health} slNo={i + 1} />
             ))}
           </tbody>
         </table>

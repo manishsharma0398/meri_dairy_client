@@ -10,19 +10,11 @@ font-family: 'Poppins', sans-serif; */
   box-sizing: border-box;
 }
 
-body {
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif; */
+body,
+code {
   font-family: "Hind Siliguri", sans-serif;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }
 
 a {
@@ -32,7 +24,7 @@ a {
 
 .body {
   /* ?Keep margin top and bottom 50 */
-  margin: 116px 0 50px 0 !important;
+  margin: 90px 0 !important;
   /* margin-top: 116px !important; */
   display: flex;
   flex-direction: column;
@@ -45,18 +37,8 @@ a {
   margin-top: 372px !important;
 }
 
-/* .home-btns {
-  display: flex;
-  gap: 20px;
-} */
-
-/* .btn-link {
-  display: inline-block;
-  text-decoration: underline;
-} */
-
 table {
-  width: 500px;
+  /* width: 500px; */
   /* height: 200px; */
   border-collapse: collapse;
 }
@@ -64,36 +46,61 @@ table {
 th {
   border-bottom: 1px solid black;
   border: 2px solid black;
+  padding: 4px 14px;
+  font-size: 18px;
 }
 
 td {
+  padding: 3px 8px;
   text-align: center;
   border: 2px solid black;
 }
 
-.container {
-  padding: 0 30px;
-  margin: 0px auto;
-}
-
 .content {
   display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 30px;
+  /* flex-wrap: wrap;
+  justify-content: center; */
+  flex-direction: column;
+  align-items: center;
 }
 
-@media only screen and (max-width: 640px) {
+.content-body {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
   .container {
-    padding: 0 30px;
+    width: 540px;
   }
 }
 
-@media (min-width: 640.1px) and (max-width: 1007px) {
+@media (min-width: 768px) {
+  .container {
+    width: 720px;
+  }
 }
 
-@media only screen and (min-width: 1007.1px) {
+@media (min-width: 992px) {
   .container {
-    max-width: 1000px;
+    width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 1140px;
   }
 }

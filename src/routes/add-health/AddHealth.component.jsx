@@ -12,11 +12,20 @@ import InputForm from "../../components/input-form/InputForm.component";
 import AnimalDropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 import Dropdown from "../../components/dropdown/Dropdown.component";
 import Form from "../../components/form/Form.component";
+import updateState from "../../utils/updateState";
+import Spinner from "../../components/spinner/Spinner.component";
 
 const AddHealth = () => {
+  const initialHealthErrors = {
+    animal_id_error: "",
+    treatment_type_error: "",
+    medicine_error: "",
+    date_error: "",
+  };
+
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [healthErrors, setHealthErrors] = useState(initialHealthErrors);
   const { healthRecords } = useSelector((state) => state.health);
   const { page, healthId } = useLocation().state;
   const [healthFields, setHealthFields] = useState({
@@ -26,6 +35,8 @@ const AddHealth = () => {
     date: "",
   });
   const { animal_id, treatment_type, medicine, date } = healthFields;
+  const { animal_id_error, treatment_type_error, medicine_error, date_error } =
+    healthErrors;
   const treatmentTypes = [
     { value: "vaccine", label: "Vaccine" },
     { value: "deworming", label: "Deworming" },
@@ -53,23 +64,28 @@ const AddHealth = () => {
 
   const healthFormHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const healthD =
       page === "addHealth"
         ? await addHealthData(healthFields)
         : await updateHealthData(healthFields, healthId);
 
-    const { error } = healthD;
-    if (error) return;
+    setIsLoading(false);
+    const { error, data } = healthD;
+    if (error)
+      return setHealthErrors((state) => {
+        return updateState({ state, data });
+      });
     return navigate("/health");
   };
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <Form
       formHeading={`${page === "addHealth" ? "Add" : "Update"} Health Record`}
       onSubmitFormHandler={healthFormHandler}
-      error={error}
-      errorMsg={errorMsg}
       btnText={`${page === "addHealth" ? "Add" : "Update"} Health Record`}
       children={
         <Fragment>
@@ -80,9 +96,13 @@ const AddHealth = () => {
             placeholder="Select Animal"
             onChangeHandler={onChangeHandler}
             inputValue={animal_id}
+            dropdownError={animal_id_error}
+            required={true}
           />
           <Dropdown
             id="treatment_type"
+            dropdownError={treatment_type_error}
+            required={true}
             label="Treatment type"
             name="treatment_type"
             inputValue={treatment_type}
@@ -101,6 +121,8 @@ const AddHealth = () => {
             inputValue={medicine}
             onChangeHandler={onChangeHandler}
             placeholder="Medicine"
+            inputError={medicine_error}
+            // required={true}
           />
           <InputForm
             id="date"
@@ -110,6 +132,8 @@ const AddHealth = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Date"
             type="date"
+            inputError={date_error}
+            // required={true}
           />
         </Fragment>
       }

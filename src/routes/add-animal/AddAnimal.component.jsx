@@ -8,6 +8,7 @@ import {
 } from "../../store/animal/animal-action-creator";
 import { parseDate } from "../../utils/dateParser";
 import { uploadPhoto } from "../../utils/uploadImageHandler";
+import updateState from "../../utils/updateState";
 
 import Form from "../../components/form/Form.component";
 import InputForm from "../../components/input-form/InputForm.component";
@@ -15,8 +16,25 @@ import RadioInput from "../../components/radio-input/RadioInput.component";
 import ImageUploader from "../../components/image-uploader/ImageUploader.component";
 
 import "./AddAnimal.styles.scss";
+import RadioGroup from "../../components/radio-group/RadioGroup.component";
+import Spinner from "../../components/spinner/Spinner.component";
 
 const AddAnimal = () => {
+  const initialAnimalErrors = {
+    identifier_error: "",
+    breed_error: "",
+    animal_type_error: "",
+    animal_status_error: "",
+    date_error: "",
+    gender_error: "",
+    remarks_error: "",
+    photo_url_error: "",
+    bull_name_error: "",
+    dam_name_error: "",
+    bull_breed_error: "",
+    dam_breed_error: "",
+  };
+
   const [animalFields, setAnimalFields] = useState({
     identifier: "",
     breed: "",
@@ -31,6 +49,24 @@ const AddAnimal = () => {
     bull_breed: "",
     dam_breed: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [animalErrorFields, setAnimalErrorFields] =
+    useState(initialAnimalErrors);
+
+  const {
+    identifier_error,
+    breed_error,
+    animal_type_error,
+    animal_status_error,
+    date_error,
+    gender_error,
+    remarks_error,
+    bull_name_error,
+    dam_name_error,
+    bull_breed_error,
+    dam_breed_error,
+  } = animalErrorFields;
+
   const [image, setImage] = useState({ preview: "", raw: "" });
   const { page, animalId } = useLocation().state;
   const navigate = useNavigate();
@@ -55,18 +91,6 @@ const AddAnimal = () => {
     setAnimalFields({ ...animalFields, [e.target.name]: e.target.value });
   };
 
-  const addNewAnimalHandler = async () => {
-    const { error } = await addNewAnimal(animalFields);
-    if (error) return;
-    return navigate("/animals");
-  };
-
-  const updateAnimalHandler = async () => {
-    const { error } = await updateAnimal(animalFields, animalId);
-    if (error) return;
-    return navigate("/animals");
-  };
-
   const onFileChange = async (e) => {
     if (e.target.files.length) {
       setImage({
@@ -82,11 +106,25 @@ const AddAnimal = () => {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     // const { error, data } = await uploadPhoto(image);
     const { data } = await uploadPhoto(image);
     animalFields.photo_url = data;
-    if (page === "addAnimal") return addNewAnimalHandler();
-    return updateAnimalHandler();
+
+    return addOrUpdtAnimalHandler();
+  };
+
+  const addOrUpdtAnimalHandler = async () => {
+    setAnimalErrorFields(initialAnimalErrors);
+    const { error, data } =
+      page === "addAnimal"
+        ? await addNewAnimal(animalFields)
+        : await updateAnimal(animalFields, animalId);
+    setIsLoading(false);
+    if (!error) return navigate("/animals");
+    return setAnimalErrorFields((state) => {
+      return updateState({ state, data });
+    });
   };
 
   const {
@@ -104,38 +142,48 @@ const AddAnimal = () => {
   } = animalFields;
   const { preview, raw } = image;
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <Form
       formHeading={page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
       onSubmitFormHandler={handleSubmitForm}
       btnText={page === "addAnimal" ? "Add Animal" : "Update Animal Data"}
       children={
         <Fragment>
-          <label className="label">Animal</label>
-          <RadioInput
-            id="cow"
-            label="Cow"
-            name="animal_type"
-            inputValue="cow"
-            onChangeHandler={onChangeHandler}
-            checked={animal_type === "cow"}
+          <RadioGroup
+            label="Animal"
+            inputError={animal_type_error}
+            children={
+              <Fragment>
+                <RadioInput
+                  id="cow"
+                  label="Cow"
+                  name="animal_type"
+                  inputValue="cow"
+                  onChangeHandler={onChangeHandler}
+                  checked={animal_type === "cow"}
+                />
+                <RadioInput
+                  id="goat"
+                  label="Goat"
+                  name="animal_type"
+                  inputValue="goat"
+                  onChangeHandler={onChangeHandler}
+                  checked={animal_type === "goat"}
+                />
+                <RadioInput
+                  id="buffalo"
+                  label="Buffalo"
+                  name="animal_type"
+                  inputValue="buffalo"
+                  onChangeHandler={onChangeHandler}
+                  checked={animal_type === "buffalo"}
+                />
+              </Fragment>
+            }
           />
-          <RadioInput
-            id="goat"
-            label="Goat"
-            name="animal_type"
-            inputValue="goat"
-            onChangeHandler={onChangeHandler}
-            checked={animal_type === "goat"}
-          />
-          <RadioInput
-            id="buffalo"
-            label="Buffalo"
-            name="animal_type"
-            inputValue="buffalo"
-            onChangeHandler={onChangeHandler}
-            checked={animal_type === "buffalo"}
-          />
+
           <InputForm
             id="identifier"
             label="Identifier"
@@ -143,6 +191,8 @@ const AddAnimal = () => {
             inputValue={identifier}
             onChangeHandler={onChangeHandler}
             placeholder="Animal Name/ Tag No/ Or Any Marks"
+            inputError={identifier_error}
+            // required={true}
           />
           <InputForm
             id="breed"
@@ -151,41 +201,60 @@ const AddAnimal = () => {
             inputValue={breed}
             onChangeHandler={onChangeHandler}
             placeholder="Animal Breed"
+            inputError={breed_error}
+            // required={true}
           />
-          <label className="label">Gender</label>
-          <RadioInput
-            id="male"
-            label="Male"
-            name="gender"
-            inputValue="male"
-            onChangeHandler={onChangeHandler}
-            checked={gender === "male"}
+
+          <RadioGroup
+            label="Gender"
+            inputError={gender_error}
+            children={
+              <Fragment>
+                <RadioInput
+                  id="male"
+                  label="Male"
+                  name="gender"
+                  inputValue="male"
+                  onChangeHandler={onChangeHandler}
+                  checked={gender === "male"}
+                />
+                <RadioInput
+                  id="female"
+                  label="Female"
+                  name="gender"
+                  inputValue="female"
+                  onChangeHandler={onChangeHandler}
+                  checked={gender === "female"}
+                />
+              </Fragment>
+            }
           />
-          <RadioInput
-            id="female"
-            label="Female"
-            name="gender"
-            inputValue="female"
-            onChangeHandler={onChangeHandler}
-            checked={gender === "female"}
+
+          <RadioGroup
+            inputError={animal_status_error}
+            label="Animal Status"
+            children={
+              <Fragment>
+                <RadioInput
+                  id="purchased"
+                  label="Purchased"
+                  name="animal_status"
+                  inputValue="purchased"
+                  onChangeHandler={onChangeHandler}
+                  checked={animal_status === "purchased"}
+                />
+                <RadioInput
+                  id="born_on_farm"
+                  label="Born On Farm"
+                  name="animal_status"
+                  inputValue="born_on_farm"
+                  onChangeHandler={onChangeHandler}
+                  checked={animal_status === "born_on_farm"}
+                />
+              </Fragment>
+            }
           />
-          <label className="label">Animal Status</label>
-          <RadioInput
-            id="purchased"
-            label="Purchased"
-            name="animal_status"
-            inputValue="purchased"
-            onChangeHandler={onChangeHandler}
-            checked={animal_status === "purchased"}
-          />
-          <RadioInput
-            id="born_on_farm"
-            label="Born On Farm"
-            name="animal_status"
-            inputValue="born_on_farm"
-            onChangeHandler={onChangeHandler}
-            checked={animal_status === "born_on_farm"}
-          />
+
           <InputForm
             id="date"
             label="Date"
@@ -194,6 +263,8 @@ const AddAnimal = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Date"
             type="date"
+            inputError={date_error}
+            // required={true}
           />
           <InputForm
             id="remarks"
@@ -202,6 +273,8 @@ const AddAnimal = () => {
             inputValue={remarks}
             onChangeHandler={onChangeHandler}
             placeholder="Remarks"
+            inputError={remarks_error}
+            // required={true}
           />
           <InputForm
             id="bull_name"
@@ -210,6 +283,8 @@ const AddAnimal = () => {
             inputValue={bull_name}
             onChangeHandler={onChangeHandler}
             placeholder="Bull Name"
+            inputError={bull_name_error}
+            // required={true}
           />
           <InputForm
             id="bull_breed"
@@ -218,6 +293,8 @@ const AddAnimal = () => {
             inputValue={bull_breed}
             onChangeHandler={onChangeHandler}
             placeholder="Bull Breed"
+            inputError={bull_breed_error}
+            // required={true}
           />
           <InputForm
             id="dam_name"
@@ -226,6 +303,8 @@ const AddAnimal = () => {
             inputValue={dam_name}
             onChangeHandler={onChangeHandler}
             placeholder="Dam Name"
+            inputError={dam_name_error}
+            // required={true}
           />
           <InputForm
             id="dam_breed"
@@ -234,6 +313,8 @@ const AddAnimal = () => {
             inputValue={dam_breed}
             onChangeHandler={onChangeHandler}
             placeholder="Dam Breed"
+            inputError={dam_breed_error}
+            // required={true}
           />
           <ImageUploader
             previewImage={preview}

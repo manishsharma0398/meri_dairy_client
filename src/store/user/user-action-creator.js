@@ -1,6 +1,10 @@
 import axios from "axios";
 import cryptoJs from "crypto-js";
 
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+import { auth } from "../../utils/firebase-details";
+
 import { SET_CURRENT_USER, SET_CURRENT_USER_ERROR } from "./user-action-types";
 
 export const setCurrentUser = (userData) => ({
@@ -13,13 +17,39 @@ export const setCurrentUserError = (error) => ({
   payload: error,
 });
 
+export const loginWithGoogle = () => {
+  const provider = new GoogleAuthProvider();
+
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // ...
+      console.log({ token, user });
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      console.log({ errorCode, errorMessage, email, credential });
+    });
+};
+
 export const loginUser = async (loginData) => {
-  const { emailOrPhone, password } = loginData;
+  const { email, password } = loginData;
 
   try {
     const userData = await axios.post("/auth/login", {
       password,
-      email: emailOrPhone,
+      email,
     });
 
     const stringifyUserData = JSON.stringify(userData.data.data);
@@ -34,7 +64,7 @@ export const loginUser = async (loginData) => {
 
     return { ...userData.data, error: false };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 

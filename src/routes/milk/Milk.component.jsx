@@ -48,7 +48,8 @@ const Milk = () => {
         <table>
           <thead>
             <tr>
-              <th>Animal Name</th>
+              <th>Sl. No</th>
+              <th>Animal</th>
               <th>Time</th>
               <th>Date</th>
               <th>Quantity</th>
@@ -56,8 +57,8 @@ const Milk = () => {
             </tr>
           </thead>
           <tbody>
-            {milkData.map((milk) => (
-              <MilkItem key={milk.id} milk={milk} />
+            {milkData.map((milk, i) => (
+              <MilkItem key={milk.id} milk={milk} slNo={i + 1} />
             ))}
           </tbody>
         </table>

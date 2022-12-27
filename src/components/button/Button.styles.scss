@@ -1,6 +1,6 @@
 .btn {
   margin: 22px 0 15px 0;
-  padding: 5px 0;
+  padding: 7px 0;
   font-size: 22px;
   display: block;
   width: 100%;
@@ -16,5 +16,28 @@
     color: black;
     background-color: #fff;
     border: 1px solid black;
+  }
+
+  &-body {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 5px 20px;
+    gap: 20px;
+
+    img {
+      width: 25px;
+      height: 25px;
+    }
+  }
+}
+
+.btn.inverted {
+  color: black;
+  background: white;
+  border: 1px solid black;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.25);
   }
 }

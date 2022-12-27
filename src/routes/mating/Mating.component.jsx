@@ -1,17 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { FiEdit3, FiTrash2 } from "react-icons/fi";
-import moment from "moment";
+import { useSelector } from "react-redux";
 
-import {
-  setMatingData,
-  deleteMatingData,
-} from "../../store/mating/mating-action-creator";
+import DialogBox from "../../components/dialog-box/DialogBox.component";
+import MatingItem from "../../components/mating-item/MatingItem.component";
 
 const Mating = () => {
-  const dispatch = useDispatch();
   const { matingData } = useSelector((state) => state.mating);
+  const { deleteDialogBox } = useSelector((state) => state.UI);
 
   // const fetchMatingData = async () => {
   //   const { error, data } = await getMatingData();
@@ -19,70 +15,54 @@ const Mating = () => {
   //   dispatch(setMatingData(data));
   // };
 
-  const deleteMatingHandler = async (id) => {
-    console.log("delete mating handler");
-    const { error } = await deleteMatingData(id);
-    if (error) return;
-    const updtMatingRecords = matingData.filter((m) => m.id !== id);
-    dispatch(setMatingData(updtMatingRecords));
-  };
-
   return (
-    <div>
-      <Link
-        state={{ page: "addMating", matingId: null }}
-        className="btn btn-link"
-        to="/mating/add"
-      >
-        Add Mating Record
-      </Link>
+    <div className="content">
+      {deleteDialogBox && <DialogBox />}
+      {!matingData && <h2>Loading...</h2>}
+      {matingData && matingData.length === 0 && (
+        <h2>No Mating Records. Please add one</h2>
+      )}
+      {matingData && (
+        <Link
+          state={{ page: "addMating", matingId: null }}
+          className="btn btn-link"
+          to="/mating/add"
+        >
+          Add Mating Record
+        </Link>
+      )}
 
-      {matingData &&
-        matingData.map((mate) => {
-          const {
-            id,
-            date,
-            // a_id,
-            // bull_or_ai,
-            // bull_or_semen_name,
-            // bull_or_semen_id,
-            // breed,
-            // semen_brand,
-            // cost,
-            // success,
-          } = mate;
-          return (
-            <div
-              style={{
-                border: "1px solid gray",
-                marginBottom: "10px",
-                padding: "10px",
-              }}
-              key={id}
-            >
-              <div className="actions">
-                <Link
-                  state={{ page: "editMating", matingId: id }}
-                  to={`/mating/edit`}
-                >
-                  <FiEdit3 className="act" style={{ color: "blue" }} />{" "}
-                </Link>
-                <FiTrash2
-                  onClick={() => deleteMatingHandler(id)}
-                  className="act"
-                  style={{ color: "red" }}
-                />
-              </div>
-              {/* <h2>
-                {title} - ₹ {amount}
-              </h2> */}
-              <h2>Date: {moment(date).format("dddd Do MMMM YYYY")}</h2>
-              {/* <h2>Type: {type}</h2> */}
-              {/* <h2>Mode: {mode}</h2> */}
-              {/* <h2>Remarks: {remarks}</h2> */}
-            </div>
-          );
-        })}
+      {!matingData && (
+        <div>
+          <h2 className="err-msg">Something went wrong. Please try again</h2>
+          <Link
+            // onClick={getAllM}
+            className="btn btn-link"
+          >
+            Refresh Page
+          </Link>
+        </div>
+      )}
+
+      {matingData && matingData.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Animal</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Breed</th>
+              <th>Delivery</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {matingData.map((mating, i) => (
+              <MatingItem key={mating.id} mating={mating} slNo={i + 1} />
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

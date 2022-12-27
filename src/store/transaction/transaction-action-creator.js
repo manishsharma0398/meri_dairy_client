@@ -12,7 +12,7 @@ export const addTransactionData = async (transactionDetails) => {
     await axios.post("/transaction/add", transactionDetails);
     return { error: false, message: "Transaction Added Successfully" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -21,7 +21,7 @@ export const updateTransactionData = async (transaction, transId) => {
     await axios.put(`/transaction/${transId}`, transaction);
     return { error: false, message: "Transaction Updated Successfully" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -30,7 +30,7 @@ export const getTransactionData = async () => {
     const res = await axios.get("/transaction/all");
     return { error: false, data: res.data };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -39,6 +39,6 @@ export const deleteTransaction = async (id) => {
     await axios.delete(`/transaction/${id}`);
     return { error: false, message: "Transaction Deleted" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };

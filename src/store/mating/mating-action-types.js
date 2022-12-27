@@ -1,1 +1,2 @@
 export const SET_MATING_DATA = "SET_MATING_DATA";
+export const SET_MATING_ERROR = "SET_MATING_ERROR";

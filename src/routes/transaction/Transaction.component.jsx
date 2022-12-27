@@ -46,6 +46,7 @@ const Transaction = () => {
           <table>
             <thead>
               <tr>
+                <th>Sl. No</th>
                 <th>Date</th>
                 <th>Title</th>
                 <th>Amount</th>
@@ -55,9 +56,10 @@ const Transaction = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((transaction) => (
+              {transactions.map((transaction, i) => (
                 <TransactionItem
                   key={transaction.id}
+                  slNo={i + 1}
                   transaction={transaction}
                 />
               ))}

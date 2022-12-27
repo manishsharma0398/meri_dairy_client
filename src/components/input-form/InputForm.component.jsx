@@ -11,15 +11,16 @@ const InputForm = ({
   placeholder,
   type,
   required,
-  inputErr,
+  inputError,
 }) => {
   return (
     <div className="form-group">
       <label className="label" htmlFor={id}>
-        {label} {required && <span className="required">*</span>}
+        {label}
+        {required && <span className="required">*</span>}
       </label>
       <input
-        className={inputErr ? "input-error" : ""}
+        className={inputError ? "input-error" : ""}
         value={inputValue}
         onChange={onChangeHandler}
         type={type}
@@ -27,8 +28,9 @@ const InputForm = ({
         name={name}
         placeholder={placeholder}
         required={required}
+        error={inputError}
       />
-      {inputErr && <span className="err-msg">{inputErr}</span>}
+      {inputError && <span className="err-msg">{inputError}</span>}
     </div>
   );
 };

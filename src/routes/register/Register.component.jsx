@@ -4,11 +4,11 @@ import { useDispatch } from "react-redux";
 
 import { registerUser } from "../../store/user/user-action-creator";
 import { setFormErrors } from "../../store/ui/ui-action-creator";
-import { inputError } from "../../utils/getError";
 
 import InputForm from "../../components/input-form/InputForm.component";
 import Form from "../../components/form/Form.component";
 import AuthHelper from "../../components/auth-helper/AuthHelper.component";
+import updateState from "../../utils/updateState";
 
 const Register = () => {
   const [registrationFormFields, setRegistrationFormFields] = useState({
@@ -31,6 +31,28 @@ const Register = () => {
     farm_address,
   } = registrationFormFields;
 
+  const initialAuthErrors = {
+    full_name_error: "",
+    email_error: "",
+    password_error: "",
+    confirmPassword_error: "",
+    phone_error: "",
+    farm_name_error: "",
+    farm_address_error: "",
+  };
+
+  const [authErrors, setAuthErrors] = useState(initialAuthErrors);
+
+  const {
+    full_name_error,
+    email_error,
+    password_error,
+    confirmPassword_error,
+    phone_error,
+    farm_name_error,
+    farm_address_error,
+  } = authErrors;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -41,10 +63,13 @@ const Register = () => {
 
   const registerFormHandler = async (e) => {
     e.preventDefault();
-    dispatch(setFormErrors([]));
+    setAuthErrors(initialAuthErrors);
     const { error, data } = await registerUser(registrationFormFields);
     if (!error) return navigate("/login");
-    return dispatch(setFormErrors(data));
+
+    setAuthErrors((state) => {
+      return updateState({ state, data });
+    });
   };
 
   useEffect(() => {
@@ -60,15 +85,17 @@ const Register = () => {
       children={
         <Fragment>
           <InputForm
-            id="full_name"
-            label="Full Name"
-            name="full_name"
-            inputValue={full_name}
+            id="email"
+            name="email"
+            label="Email"
+            inputValue={email}
             onChangeHandler={onChangeHandler}
-            placeholder="Full Name"
-            inputErr={inputError("full_name")}
+            placeholder="xyz@xyz.com"
+            inputError={email_error}
+            type="email"
             // required={true}
           />
+
           <InputForm
             id="reg_password"
             name="password"
@@ -77,7 +104,7 @@ const Register = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Password"
             type="password"
-            inputErr={inputError("password")}
+            inputError={password_error}
             // required={true}
           />
           <InputForm
@@ -88,18 +115,18 @@ const Register = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Password"
             type="password"
-            inputErr={inputError("confirmPassword")}
+            inputError={confirmPassword_error}
             // required={true}
           />
           <InputForm
-            id="email"
-            name="email"
-            label="Email"
-            inputValue={email}
+            id="full_name"
+            label="Full Name"
+            name="full_name"
+            inputValue={full_name}
             onChangeHandler={onChangeHandler}
-            placeholder="xyz@xyz.com"
-            inputErr={inputError("email")}
-            type="email"
+            placeholder="Full Name"
+            inputError={full_name_error}
+            // required={true}
           />
           <InputForm
             id="phone"
@@ -108,8 +135,9 @@ const Register = () => {
             inputValue={phone}
             onChangeHandler={onChangeHandler}
             placeholder="123456789"
-            inputErr={inputError("phone")}
+            inputError={phone_error}
             type="phone"
+            // required={true}
           />
           <InputForm
             id="farm_name"
@@ -118,7 +146,7 @@ const Register = () => {
             inputValue={farm_name}
             onChangeHandler={onChangeHandler}
             placeholder="Ex - Manish Farm"
-            inputErr={inputError("farm_name")}
+            inputError={farm_name_error}
             // required={true}
           />
           <InputForm
@@ -128,7 +156,7 @@ const Register = () => {
             inputValue={farm_address}
             onChangeHandler={onChangeHandler}
             placeholder="Ex - Milan More, Siliguri"
-            inputErr={inputError("farm_address")}
+            inputError={farm_address_error}
             // required={true}
           />
         </Fragment>

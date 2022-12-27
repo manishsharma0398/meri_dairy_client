@@ -11,10 +11,18 @@ import {
 import Dropdown from "../../components/animal-dropdown/AnimalDropdown.component";
 import InputForm from "../../components/input-form/InputForm.component";
 import Form from "../../components/form/Form.component";
+import updateState from "../../utils/updateState";
+import Spinner from "../../components/spinner/Spinner.component";
 
 const AddMilk = () => {
-  const [error, setError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
+  const initMilkErrors = {
+    a_id_error: "",
+    time_error: "",
+    date_error: "",
+    quantity_error: "",
+  };
+
+  const [isLoading, setIsLoading] = useState(false);
   const { milkData } = useSelector((state) => state.milk);
   const navigate = useNavigate();
   const { page, milkId } = useLocation().state;
@@ -24,8 +32,10 @@ const AddMilk = () => {
     date: "",
     quantity: "",
   });
+  const [milkErrors, setMilkErrors] = useState(initMilkErrors);
 
   const { a_id, time, date, quantity } = milkFields;
+  const { a_id_error, time_error, date_error, quantity_error } = milkErrors;
 
   useEffect(() => {
     if (page === "addMilk") return;
@@ -43,28 +53,34 @@ const AddMilk = () => {
 
   const onChangeHandler = (e) => {
     setMilkFields({ ...milkFields, [e.target.name]: e.target.value });
-    console.log(e.target.name, e.target.value);
   };
 
   const milkFormHandler = async (e) => {
     e.preventDefault();
+
+    setMilkErrors(initMilkErrors);
+    setIsLoading(true);
 
     const milkD =
       page === "addMilk"
         ? await addMilkData(milkFields)
         : await updateMilkData(milkFields, milkId);
 
-    const { error } = milkD;
-    if (error) return;
-    navigate("/milk");
+    setIsLoading(false);
+    const { error, data } = milkD;
+    if (error)
+      return setMilkErrors((state) => {
+        return updateState({ state, data });
+      });
+    return navigate("/milk");
   };
 
-  return (
+  return isLoading ? (
+    <Spinner />
+  ) : (
     <Form
       formHeading={`${page === "addMilk" ? "Add" : "Update"}  Milk Record`}
       onSubmitFormHandler={milkFormHandler}
-      error={error}
-      errorMsg={errorMsg}
       btnText={`${page === "addMilk" ? "Add" : "Update"} Milk Record`}
       children={
         <Fragment>
@@ -75,6 +91,8 @@ const AddMilk = () => {
             placeholder="Select Animal"
             onChangeHandler={onChangeHandler}
             inputValue={a_id}
+            dropdownError={a_id_error}
+            required={true}
           />
           <InputForm
             id="time"
@@ -83,6 +101,8 @@ const AddMilk = () => {
             inputValue={time}
             onChangeHandler={onChangeHandler}
             placeholder="Time"
+            inputError={time_error}
+            required={true}
           />
           <InputForm
             id="date"
@@ -92,6 +112,8 @@ const AddMilk = () => {
             onChangeHandler={onChangeHandler}
             placeholder="Date"
             type="date"
+            inputError={date_error}
+            required={true}
           />
           <InputForm
             id="quantity"
@@ -100,6 +122,8 @@ const AddMilk = () => {
             inputValue={quantity}
             onChangeHandler={onChangeHandler}
             placeholder="Quantity"
+            inputError={quantity_error}
+            required={true}
           />
         </Fragment>
       }

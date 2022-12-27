@@ -19,7 +19,7 @@ export const addNewAnimal = async (animalDetails) => {
     const animalData = await axios.post("/animals/add", animalDetails);
     return { ...animalData.data, error: false };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -28,7 +28,7 @@ export const getAllAnimals = async () => {
     const animalData = await axios.get("/animals/all");
     return { ...animalData.data, error: false };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -37,7 +37,7 @@ export const updateAnimal = async (animalDetails, animalId) => {
     await axios.put(`/animals/${animalId}`, animalDetails);
     return { error: false, message: "Animal Record Added Successfully" };
   } catch (err) {
-    return { error: true, message: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 
@@ -46,7 +46,7 @@ export const deleteAnimal = async (animalId) => {
     await axios.delete(`/animals/${animalId}`);
     return { error: false, message: "Animal Deleted" };
   } catch (err) {
-    return { error: true, data: err.response.data.message };
+    return { ...err.response, error: true };
   }
 };
 

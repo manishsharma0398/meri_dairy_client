@@ -7,7 +7,7 @@
   .details {
     display: flex;
     gap: 20px;
-    justify-content: space-between;
+    // justify-content: space-between;
 
     .profile-photo-container {
       max-width: 300px;
@@ -25,7 +25,8 @@
 
     .actions {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
+      gap: 22px;
 
       .edit-action,
       .delete-action {
@@ -61,9 +62,35 @@
   // }
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 992px) {
   .details {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    gap: 5px !important;
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .details {
+    gap: 0px !important;
+  }
+
+  .profile-container {
+    gap: 10px !important;
+
+    .actions {
+      flex-direction: column;
+      gap: 7px !important;
+      // align-items: flex-start;
+
+      .edit-action,
+      .delete-action {
+        width: 100% !important;
+      }
+
+      .delete-action {
+        padding-bottom: 6px !important;
+      }
+    }
   }
 }
